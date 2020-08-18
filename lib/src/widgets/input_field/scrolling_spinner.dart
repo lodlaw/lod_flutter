@@ -21,7 +21,7 @@ class ScrollingSpinner extends StatefulWidget {
       this.highlightedTextStyle,
       this.normalTextStyle,
       this.itemHeight,
-      this.spacing,
+      this.spacing = 30,
       this.items,
       this.onChange,
       this.defaultValue,
@@ -37,28 +37,19 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
   int _currentSelectedIndex = 3;
   bool isScrolling = false;
 
-  /// default settings
-  TextStyle defaultHighlightTextStyle =
-      TextStyle(fontSize: 32, color: Colors.black);
-  TextStyle defaultNormalTextStyle =
-      TextStyle(fontSize: 32, color: Colors.black54);
   double defaultItemHeight = 60;
 
   /// getter
   TextStyle _getHighlightedTextStyle() {
-    return widget.highlightedTextStyle != null
-        ? widget.highlightedTextStyle
-        : defaultHighlightTextStyle;
+    return Theme.of(context).textTheme.subtitle1;
   }
 
   TextStyle _getNormalTextStyle() {
-    return widget.normalTextStyle != null
-        ? widget.normalTextStyle
-        : defaultNormalTextStyle;
+    return Theme.of(context).textTheme.subtitle1;
   }
 
   double _getItemHeight() {
-    return widget.itemHeight != null ? widget.itemHeight : defaultItemHeight;
+    return InputField.height;
   }
 
   bool isLoop(int value) {
@@ -122,7 +113,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
   Widget _buildHintText() {
     return Positioned.fill(
       child: Padding(
-          padding: EdgeInsets.only(top: InputField.height),
+          padding: EdgeInsets.only(top: 2 * InputField.height),
           child: Text(
             widget.hintText,
             textAlign: TextAlign.center,

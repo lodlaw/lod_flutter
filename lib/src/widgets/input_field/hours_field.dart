@@ -10,13 +10,15 @@ class HoursField extends StatefulWidget {
   final int maxHours;
   final double defaultValue;
   final String title;
+  final OnChangedCallback onChanged;
 
   const HoursField(
       {Key key,
       this.minHours = 0,
       this.maxHours = 8,
       this.defaultValue,
-      this.title = "Hours"})
+      this.title = "Hours",
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class _HoursFieldState extends State<HoursField> {
 
     value = widget.maxHours.toDouble();
 
-    if (widget.defaultValue == null) {
+    if (widget.defaultValue != null) {
       value = widget.defaultValue;
     }
   }
@@ -71,7 +73,14 @@ class _HoursFieldState extends State<HoursField> {
     return ScrollingSpinner(
       hintText: "hrs",
       items: _getHoursString(),
-      onChange: (hours) {},
+      onChange: (hours) {
+        setState(() {
+          final minutes = value - value.floor();
+
+          value = double.parse(hours) + minutes;
+          widget.onChanged(value);
+        });
+      },
       defaultValue: defaultValueString,
     );
   }
@@ -81,7 +90,15 @@ class _HoursFieldState extends State<HoursField> {
       items: _getMinutesString(),
       defaultValue: _processNumber(defaultValue),
       hintText: "mins",
-      onChange: (minutes) {},
+      onChange: (minutes) {
+        final newMinutes = double.parse(minutes) / 60;
+        final hours = value.floor();
+
+        setState(() {
+          value = newMinutes + hours;
+          widget.onChanged(value);
+        });
+      },
     );
   }
 
@@ -104,10 +121,11 @@ class _HoursFieldState extends State<HoursField> {
   }
 
   String _processNumber(double value) {
+    final processedValue = value.toString().split('.')[0];
     if (value >= 10) {
-      return value.toString();
+      return processedValue;
     }
 
-    return "0$value";
+    return "0$processedValue";
   }
 }

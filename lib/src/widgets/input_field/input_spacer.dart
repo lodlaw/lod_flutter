@@ -11,6 +11,6 @@ class InputSpacer extends StatelessWidget {
             border: Border.symmetric(
                 vertical: BorderSide(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    width: InputField.height))));
+                    width: InputField.height * 3))));
   }
 }

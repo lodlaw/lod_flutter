@@ -101,13 +101,15 @@ class BackgroundInput extends StatelessWidget {
   }
 
   Widget _buildBorder(BuildContext context) {
+    final padding = EdgeInsets.symmetric(
+      horizontal: InputField.marginTop,
+    ).copyWith(top: (editable || onTap != null) ? 0 : InputField.height);
+
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       margin: EdgeInsets.only(left: 12),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: InputField.marginTop,
-            vertical: (editable || onTap != null) ? 0 : InputField.height),
+        padding: padding,
         child: Text(title,
             style: Theme.of(context).textTheme.subtitle1.apply(
                 color: Theme.of(context)
