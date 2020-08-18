@@ -98,6 +98,7 @@ class _DateFieldState extends State<DateField> {
 
     return ScrollingSpinner(
       hintText: "yyyy",
+      spacing: 43,
       onChange: (year) {
         setState(() {
           // TODO: Check for the validity
