@@ -1,4 +1,5 @@
 export 'hours_field.dart';
+export 'date_field.dart';
 
 class InputField {
   static const height = 42.0;
