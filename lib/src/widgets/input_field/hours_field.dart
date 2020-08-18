@@ -9,9 +9,14 @@ class HoursField extends StatefulWidget {
   final int minHours;
   final int maxHours;
   final double defaultValue;
+  final String title;
 
   const HoursField(
-      {Key key, this.minHours = 0, this.maxHours = 8, this.defaultValue})
+      {Key key,
+      this.minHours = 0,
+      this.maxHours = 8,
+      this.defaultValue,
+      this.title = "Hours"})
       : super(key: key);
 
   @override
@@ -37,6 +42,7 @@ class _HoursFieldState extends State<HoursField> {
     final textStyle = Theme.of(context).textTheme.subtitle1;
 
     return InputWrapper(
+      title: widget.title,
       input: Row(
         children: <Widget>[
           InputSpacer(),
