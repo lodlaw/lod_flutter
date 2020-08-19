@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_field.dart';
+import 'package:lodlaw_flutter/src/widgets/input_field/input_field.dart'
+    hide TextField;
 
 class InputWrapper extends StatelessWidget {
   final Widget input;
@@ -9,6 +10,7 @@ class InputWrapper extends StatelessWidget {
   final Function(String value) onChanged;
   final Function onTap;
   final TextEditingController controller;
+  final int maxLines;
 
   const InputWrapper(
       {Key key,
@@ -18,9 +20,9 @@ class InputWrapper extends StatelessWidget {
       this.editable = false,
       this.onChanged,
       this.onTap,
+      this.maxLines = 1,
       this.controller})
-      : assert(input != null),
-        assert(title != null),
+      : assert(title != null),
         super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class InputWrapper extends StatelessWidget {
           onChanged: onChanged,
           onTap: onTap,
           title: title,
+          maxLines: maxLines,
           controller: controller);
     }
     return Stack(
@@ -65,6 +68,7 @@ class BackgroundInput extends StatelessWidget {
   final Function onTap;
   final TextEditingController controller;
   final String title;
+  final int maxLines;
 
   const BackgroundInput(
       {Key key,
@@ -73,7 +77,8 @@ class BackgroundInput extends StatelessWidget {
       this.onChanged,
       this.onTap,
       this.controller,
-      this.title})
+      this.title,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
@@ -81,18 +86,19 @@ class BackgroundInput extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: InputField.height,
+          height: (editable || onTap != null) ? null : InputField.height,
           margin: EdgeInsets.only(
               top: InputField.marginTop +
                   ((editable || onTap != null) ? 0 : InputField.height)),
           child: TextField(
             onTap: onTap,
+            maxLines: maxLines,
             controller: controller,
             readOnly: !editable,
             onChanged: onChanged,
             decoration: InputDecoration(
                 hintText: hintText,
-                contentPadding: EdgeInsets.only(top: 4, left: 12)),
+                contentPadding: EdgeInsets.only(top: 24, left: 12)),
           ),
         ),
         _buildBorder(context)
