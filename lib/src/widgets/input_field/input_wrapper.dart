@@ -22,8 +22,7 @@ class InputWrapper extends StatelessWidget {
       this.onTap,
       this.maxLines = 1,
       this.controller})
-      : assert(title != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +45,27 @@ class InputWrapper extends StatelessWidget {
             onTap: onTap,
             title: title,
             controller: controller),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                  right: InputField.height, top: InputField.marginTop),
-              child: input,
-            ),
-          ],
-        )
+        if (title == null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 0, top: InputField.marginTop),
+                child: input,
+              ),
+            ],
+          ),
+        if (title != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                    right: InputField.height, top: InputField.marginTop),
+                child: input,
+              ),
+            ],
+          )
       ],
     );
   }
@@ -86,7 +96,9 @@ class BackgroundInput extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: (editable || onTap != null) ? null : InputField.height,
+          height: ((editable || onTap != null) && maxLines != 1)
+              ? null
+              : InputField.height,
           margin: EdgeInsets.only(
               top: InputField.marginTop +
                   ((editable || onTap != null) ? 0 : InputField.height)),
@@ -101,7 +113,7 @@ class BackgroundInput extends StatelessWidget {
                 contentPadding: EdgeInsets.only(top: 24, left: 12)),
           ),
         ),
-        _buildBorder(context)
+        if (title != null) _buildBorder(context)
       ],
     );
   }

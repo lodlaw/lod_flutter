@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lodlaw_flutter/lodlaw_flutter.dart';
 import 'package:lodlaw_flutter/src/widgets/input_field/input_spacer.dart';
 import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
 class DateField extends StatefulWidget {
   final DateTime defaultValue;
@@ -51,72 +51,41 @@ class _DateFieldState extends State<DateField> {
   }
 
   Widget _buildDay(TextStyle textStyle) {
-    final List<String> items = [];
-    for (int i = 1; i < 32; i++) {
-      items.add(_processNumber(i));
-    }
-
-    return ScrollingSpinner(
-      items: items,
-      defaultValue: _processNumber(value.day),
-      hintText: "dd",
-      onChange: (day) {
+    return DayScroller(
+      onChanged: (day) {
         setState(() {
           // TODO: Check for the validity
-          value = DateTime(value.year, value.day, int.parse(day));
+          value = DateTime(value.year, value.day, day);
           widget.onChanged(value);
         });
       },
+      defaultValue: value.day,
     );
   }
 
   Widget _buildMonth(TextStyle textStyle) {
-    final List<String> items = [];
-    for (int i = 1; i < 13; i++) {
-      items.add(_processNumber(i));
-    }
-
-    return ScrollingSpinner(
-      hintText: "mm",
-      onChange: (month) {
+    return MonthScroller(
+      onChanged: (month) {
         setState(() {
           // TODO: Check for the validity
-          value = DateTime(value.year, int.parse(month), value.day);
+          value = DateTime(value.year, month, value.day);
           widget.onChanged(value);
         });
       },
-      items: items,
-      defaultValue: _processNumber(value.month),
+      defaultValue: value.month,
     );
   }
 
   Widget _buildYear(TextStyle textStyle) {
-    final List<String> items = [];
-    for (int i = DateTime.now().year - 1; i < DateTime.now().year + 2; i++) {
-      items.add(i.toString());
-    }
-
-    return ScrollingSpinner(
-      hintText: "yyyy",
-      spacing: 43,
-      onChange: (year) {
+    return YearScroller(
+      onChanged: (year) {
         setState(() {
           // TODO: Check for the validity
-          value = DateTime(int.parse(year), value.month, value.day);
+          value = DateTime(year, value.month, value.day);
           widget.onChanged(value);
         });
       },
-      items: items,
-      defaultValue: value.year.toString(),
+      defaultValue: value.year,
     );
-  }
-
-  String _processNumber(int value) {
-    final processedValue = value.toString().split('.')[0];
-    if (value >= 10) {
-      return processedValue;
-    }
-
-    return "0$processedValue";
   }
 }
