@@ -20,13 +20,13 @@ class DateRangeField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: _SimpleDateField(
+            child: SimpleDateField(
           confirmButtonPadding: confirmButtonPadding,
           confirmButtonSize: confirmButtonSize,
           title: "Start Date*",
         )),
         Expanded(
-          child: _SimpleDateField(
+          child: SimpleDateField(
             confirmButtonPadding: confirmButtonPadding,
             confirmButtonSize: confirmButtonSize,
             title: "End Date",
@@ -37,12 +37,13 @@ class DateRangeField extends StatelessWidget {
   }
 }
 
-class _SimpleDateField extends StatefulWidget {
+@visibleForTesting
+class SimpleDateField extends StatefulWidget {
   final EdgeInsets confirmButtonPadding;
   final String title;
   final double confirmButtonSize;
 
-  const _SimpleDateField(
+  const SimpleDateField(
       {Key key,
       this.title,
       this.confirmButtonPadding = const EdgeInsets.symmetric(horizontal: 4.0),
@@ -51,10 +52,10 @@ class _SimpleDateField extends StatefulWidget {
         super(key: key);
 
   @override
-  __SimpleDateFieldState createState() => __SimpleDateFieldState();
+  _SimpleDateFieldState createState() => _SimpleDateFieldState();
 }
 
-class __SimpleDateFieldState extends State<_SimpleDateField> {
+class _SimpleDateFieldState extends State<SimpleDateField> {
   bool _isVisible = false;
 
   @override
