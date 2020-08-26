@@ -4,29 +4,41 @@ import 'package:lodlaw_flutter/src/widgets/input_field/input_spacer.dart';
 import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
 
 class DateField extends StatefulWidget {
-  final DateTime defaultValue;
+  /// The initial value of the field. Defaults to [DateTime.now].
+  final DateTime initialValue;
+
+  /// The title of the field.
   final String title;
+
+  /// Called when the value of the field is changed.
   final void Function(DateTime) onChanged;
 
-  const DateField(
-      {Key key, this.defaultValue, this.title = "Date", this.onChanged})
-      : super(key: key);
+  /// Creates an uncontrolled date field.
+  ///
+  /// The [onChanged] argument must not be null.
+  ///
+  /// If [title] is null, the spinners will be horizontally centered.
+  const DateField({
+    Key key,
+    @required this.onChanged,
+    this.initialValue,
+    this.title = "Date",
+  })  : assert(onChanged != null),
+        super(key: key);
 
   @override
   _DateFieldState createState() => _DateFieldState();
 }
 
 class _DateFieldState extends State<DateField> {
-  DateTime value;
+  DateTime value = DateTime.now();
 
   @override
   void initState() {
     super.initState();
 
-    value = DateTime.now();
-
-    if (widget.defaultValue != null) {
-      value = widget.defaultValue;
+    if (widget.initialValue != null) {
+      value = widget.initialValue;
     }
   }
 
@@ -39,53 +51,62 @@ class _DateFieldState extends State<DateField> {
       input: Row(
         children: <Widget>[
           InputSpacer(),
-          _buildDay(textStyle),
+          _buildDayScroller(textStyle),
           InputSpacer(),
-          _buildMonth(textStyle),
+          _buildMonthScroller(textStyle),
           InputSpacer(),
-          _buildYear(textStyle),
+          _buildYearScroller(textStyle),
           InputSpacer()
         ],
       ),
     );
   }
 
-  Widget _buildDay(TextStyle textStyle) {
+  Widget _buildDayScroller(TextStyle textStyle) {
     return DayScroller(
+      date: value,
       onChanged: (day) {
         setState(() {
-          // TODO: Check for the validity
-          value = DateTime(value.year, value.day, day);
+          value = DateTime(value.year, value.month, day);
           widget.onChanged(value);
         });
       },
-      defaultValue: value.day,
+      value: value.day,
     );
   }
 
-  Widget _buildMonth(TextStyle textStyle) {
+  Widget _buildMonthScroller(TextStyle textStyle) {
     return MonthScroller(
       onChanged: (month) {
+        final newDate = DateTime(value.year, month, value.day);
+
         setState(() {
-          // TODO: Check for the validity
-          value = DateTime(value.year, month, value.day);
-          widget.onChanged(value);
+          // Because some months can have 30 days and others can have 31 days,
+          // sometimes it will display the incorrect value.
+          //
+          // If the value is incorrect, set the value to be the first day of
+          // the selected month
+          if (newDate.month == month) {
+            value = newDate;
+            if (widget.onChanged != null) widget.onChanged(value);
+          } else {
+            value = DateTime(value.year, month, 1);
+          }
         });
       },
-      defaultValue: value.month,
+      value: value.month,
     );
   }
 
-  Widget _buildYear(TextStyle textStyle) {
+  Widget _buildYearScroller(TextStyle textStyle) {
     return YearScroller(
       onChanged: (year) {
         setState(() {
-          // TODO: Check for the validity
           value = DateTime(year, value.month, value.day);
           widget.onChanged(value);
         });
       },
-      defaultValue: value.year,
+      value: value.year,
     );
   }
 }
