@@ -20,17 +20,27 @@ class ScrollingSpinner extends StatefulWidget {
   /// The current value of the spinner
   final String value;
 
-  /// Hint text for the spinner
+  /// Hint text for the spinner.
   final String hintText;
+
+  /// The height of the spinner.
+  ///
+  /// If it's null, default to [_numOfRenderedElements * InputField.height]
+  final double height;
+
+  /// Whether or not the spinner will loop if all options are exahusted.
+  final bool looping;
 
   /// An uncontrolled cupertino style loop spinner
   ScrollingSpinner({
     Key key,
     this.width = _width,
+    this.height,
     this.items,
     this.onChange,
     this.value,
     this.hintText = "",
+    this.looping = true,
   })  : assert(hintText != null),
         super(key: key);
 
@@ -84,23 +94,33 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
 
   @override
   Widget build(BuildContext context) {
+    final containerHeight = widget.height == null
+        ? _getItemHeight() * _numOfRenderedElements
+        : widget.height;
+
     final spinner = SizedBox(
       width: widget.width,
-      height: _getItemHeight() * _numOfRenderedElements,
-      child: CupertinoPicker(
-        scrollController: _scrollController,
-        itemExtent: _getItemHeight(),
-        onSelectedItemChanged: (index) {
-          widget.onChange(widget.items[index]);
-        },
-        squeeze: _squeeze,
-        diameterRatio: _diameterRatio,
-        looping: true,
-        children: widget.items
-            .map((e) => SpinningItem(
-                  content: e,
-                ))
-            .toList(),
+      height: containerHeight,
+      child: Stack(
+        children: [
+          _SelectedBorder(
+            height: _getItemHeight(),
+          ),
+          CupertinoPicker(
+              scrollController: _scrollController,
+              itemExtent: _getItemHeight(),
+              onSelectedItemChanged: (index) {
+                widget.onChange(widget.items[index]);
+              },
+              squeeze: _squeeze,
+              diameterRatio: _diameterRatio,
+              looping: widget.looping,
+              children: widget.items
+                  .map((e) => SpinningItem(
+                        content: e,
+                      ))
+                  .toList()),
+        ],
       ),
     );
 
@@ -116,6 +136,37 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
 
   double _getItemHeight() {
     return InputField.height;
+  }
+}
+
+class _SelectedBorder extends StatelessWidget {
+  /// Height of the input field.
+  final double height;
+
+  /// Creates a vertically center selection vertical border in a stack.
+  ///
+  /// [height] must not be null.
+  const _SelectedBorder({
+    Key key,
+    @required this.height,
+  })  : assert(height != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final color =
+        Theme.of(context).inputDecorationTheme.focusedBorder.borderSide.color;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: height,
+          decoration: BoxDecoration(
+              border: Border.symmetric(
+                  vertical: BorderSide(color: color, width: 1.5))),
+        ),
+      ],
+    );
   }
 }
 

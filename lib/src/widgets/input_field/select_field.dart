@@ -1,22 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:lodlaw_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
 import 'input_wrapper.dart';
 
+/// The height of the selection border.
+const _modalHeight = 200.0;
+
 class SelectField extends StatefulWidget {
+  /// The categories to be selected from.
   final List<String> categories;
+
+  /// Called to check if other option should be visible.
   final bool Function(String) otherOptionVisible;
+
+  /// Called when the values of select field are changed.
   final Function(String value, String otherValue) onChanged;
+
+  /// The initial value of the field.
   final String initialValue;
+
+  /// The initial value of the other option field.
   final String initialSecondaryValue;
 
+  /// The title of the main input field.
+  final String title;
+
+  /// The title of the "other" input field.
+  final String secondaryTitle;
+
+  /// The hint text of the primary field.
+  final String hintText;
+
+  /// The hint text of the secondary field.
+  final String secondaryHintText;
+
+  /// Creates a select field with an "other" value option.
+  ///
+  /// Arguments [ categories], [hintText],[secondaryHintText] must not be null.
+  ///
+  /// If [otherOptionVisible] is null then [initialSecondaryValue] will be
+  /// discarded and other field will not be visible.
   const SelectField(
       {Key key,
       @required this.categories,
+      @required this.title,
+      @required this.hintText,
       this.otherOptionVisible,
       this.onChanged,
       this.initialValue,
-      this.initialSecondaryValue})
+      this.initialSecondaryValue,
+      this.secondaryTitle,
+      this.secondaryHintText})
       : assert(categories != null),
+        assert(hintText != null),
+        assert(title != null),
+        assert(otherOptionVisible != null
+            ? secondaryHintText != null && secondaryTitle != null
+            : true),
         super(key: key);
 
   @override
@@ -24,19 +64,27 @@ class SelectField extends StatefulWidget {
 }
 
 class _SelectFieldState extends State<SelectField> {
+  /// A controller controlling the main input field.
   final _inputController = TextEditingController();
+
+  /// A controller controlling the other input field.
   final _customOptionController = TextEditingController();
+
+  /// Whether or not the "other" field is visible.
   bool _isCustomOptionVisible = false;
 
   @override
   void initState() {
     super.initState();
 
+    // if there is an initial value then set it to the main input
     if (widget.initialValue != null) {
       _inputController.text = widget.initialValue;
     }
 
-    if (widget.initialSecondaryValue != null) {
+    // if other value is provided then set it to the state
+    if (widget.initialSecondaryValue != null &&
+        widget.otherOptionVisible != null) {
       _customOptionController.text = widget.initialSecondaryValue;
       _isCustomOptionVisible = true;
     }
@@ -44,37 +92,34 @@ class _SelectFieldState extends State<SelectField> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryInput = InputWrapper(
+      controller: _inputController,
+      title: widget.title,
+      editable: false,
+      onTap: _onSelect,
+      hintText: widget.hintText,
+    );
+
+    final secondaryInput = AnimatedContainer(
+        height: _isCustomOptionVisible ? null : 0,
+        duration: const Duration(milliseconds: 120),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: SingleChildScrollView(
+            child: InputWrapper(
+              title: widget.secondaryTitle,
+              controller: _customOptionController,
+              editable: true,
+              hintText: widget.secondaryHintText,
+              onChanged: (value) => _propogateFeedback(),
+            ),
+          ),
+        ));
+
     return Column(
       children: <Widget>[
-        InputWrapper(
-          controller: _inputController,
-          title: "Activity description",
-          editable: false,
-          onTap: _onSelect,
-          hintText: "Describe the activity in your area of focus",
-        ),
-        AnimatedContainer(
-            height: _isCustomOptionVisible ? null : 0,
-            duration: const Duration(milliseconds: 120),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: SingleChildScrollView(
-                child: InputWrapper(
-                  title: "Your custom category",
-                  input: Container(),
-                  key: ValueKey('customTrainingCategoryInput'),
-                  controller: _customOptionController,
-                  editable: true,
-                  hintText: "Type in your area of focus",
-                  onChanged: (value) {
-                    if (widget.onChanged != null)
-                      widget.onChanged(
-                          _isCustomOptionVisible ? null : _inputController.text,
-                          _isCustomOptionVisible ? value : null);
-                  },
-                ),
-              ),
-            )),
+        primaryInput,
+        if (widget.otherOptionVisible != null) secondaryInput
       ],
     );
   }
@@ -84,173 +129,37 @@ class _SelectFieldState extends State<SelectField> {
         context: context,
         builder: (context) {
           return Container(
-            height: 200,
+            height: _modalHeight,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: ChoicePicker(
+            child: ScrollingSpinner(
+              height: _modalHeight,
+              width: double.infinity,
               items: widget.categories,
-              initialValue: _inputController.text.isEmpty
-                  ? widget.categories.first
-                  : _inputController.text,
-              onChanged: (value) {
-                _inputController.text = value;
-
-                if (widget.otherOptionVisible != null) {
-                  setState(() {
-                    _isCustomOptionVisible = widget.otherOptionVisible(value);
-                  });
-                }
-                if (widget.onChanged != null)
-                  widget.onChanged(
-                      _isCustomOptionVisible ? null : value,
-                      _isCustomOptionVisible
-                          ? _customOptionController.text
-                          : null);
-              },
+              onChange: _setValue,
+              value: _inputController.text,
+              looping: false,
             ),
           );
         });
   }
-}
 
-class ChoicePicker extends StatefulWidget {
-  ChoicePicker({
-    Key key,
-    this.selectedKey,
-    @required this.items,
-    @required this.initialValue,
-    @required this.onChanged,
-  })  : assert(items != null),
-        super(key: key);
+  void _setValue(String value) {
+    _inputController.text = value;
 
-  // key for selected item
-  final Key selectedKey;
-
-  // Events
-  final ValueChanged<String> onChanged;
-
-  // Variables
-  final List<String> items;
-  final String initialValue;
-
-  @override
-  _ChoicePickerState createState() => _ChoicePickerState(initialValue);
-}
-
-class _ChoicePickerState extends State<ChoicePicker> {
-  _ChoicePickerState(this.selectedValue);
-
-  static const double itemHeight = 50.0;
-
-  double widgetHeight;
-  int numberOfVisibleItems;
-  int numberOfPaddingRows;
-  double visibleItemsHeight;
-  double offset;
-
-  String selectedValue;
-
-  ScrollController scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    int initialItem = widget.items.indexOf(selectedValue);
-
-    scrollController = FixedExtentScrollController(initialItem: initialItem);
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget.onChanged(selectedValue);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    TextStyle defaultStyle = themeData.textTheme.bodyText2;
-    TextStyle selectedStyle = themeData.textTheme.headline5;
-
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        widgetHeight = constraints.maxHeight;
-
-        return Stack(
-          children: <Widget>[
-            GestureDetector(
-              onTapUp: _itemTapped,
-              child: ListWheelScrollView.useDelegate(
-                childDelegate: ListWheelChildBuilderDelegate(
-                    builder: (BuildContext context, int index) {
-                  if (index < 0 || index > widget.items.length - 1) {
-                    return null;
-                  }
-
-                  var value = widget.items[index];
-
-                  final isSelected = value == selectedValue;
-
-                  final TextStyle itemStyle =
-                      (value == selectedValue) ? selectedStyle : defaultStyle;
-
-                  return Center(
-                    child: Text(value,
-                        style: itemStyle,
-                        key: isSelected ? widget.selectedKey : null),
-                  );
-                }),
-                controller: scrollController,
-                itemExtent: itemHeight,
-                onSelectedItemChanged: _onSelectedItemChanged,
-                physics: FixedExtentScrollPhysics(),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  key: ValueKey('scrollPickerUpper'),
-                ),
-                Center(
-                  child: Container(
-                    height: itemHeight,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(color: selectedStyle.color, width: 1.0),
-                        bottom:
-                            BorderSide(color: selectedStyle.color, width: 1.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  key: ValueKey('scrollPickerLower'),
-                ),
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void _itemTapped(TapUpDetails details) {
-    Offset position = details.localPosition;
-    double center = widgetHeight / 2;
-    double changeBy = position.dy - center;
-    double newPosition = scrollController.offset + changeBy;
-
-    // animate to and center on the selected item
-    scrollController.animateTo(newPosition,
-        duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
-
-  void _onSelectedItemChanged(int index) {
-    String newValue = widget.items[index];
-    if (newValue != selectedValue) {
+    // set the visible of the "other" field
+    if (widget.otherOptionVisible != null) {
       setState(() {
-        selectedValue = newValue;
-        widget.onChanged(newValue);
+        _isCustomOptionVisible = widget.otherOptionVisible(value);
       });
     }
+
+    _propogateFeedback();
+  }
+
+  /// Trigger callback provided by parent widget.ƒ
+  void _propogateFeedback() {
+    if (widget.onChanged != null)
+      widget.onChanged(_isCustomOptionVisible ? null : _inputController.text,
+          _isCustomOptionVisible ? _customOptionController.text : null);
   }
 }
