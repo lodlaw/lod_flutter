@@ -39,6 +39,12 @@ class DateRangeField extends StatefulWidget {
   /// The initial value of the field.
   final DateRange initialValue;
 
+  /// The title of the start date repr field.
+  final String startDateTitle;
+
+  /// The title of the end date repr field.
+  final String endDateTitle;
+
   /// Creates a date range spinner that includes start date and end date
   ///
   /// Argument [onChanged] must not be null
@@ -48,6 +54,8 @@ class DateRangeField extends StatefulWidget {
     @required this.onChanged,
     this.confirmButtonSize = 30,
     this.initialValue,
+    this.startDateTitle = "Start Date*",
+    this.endDateTitle = "End Date",
   })  : assert(onChanged != null),
         super(key: key);
 
@@ -86,7 +94,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
             child: _SimpleDateField(
           reprFieldController: _reprStartDateFieldController,
           confirmButtonSize: widget.confirmButtonSize,
-          title: "Start Date*",
+          title: widget.startDateTitle,
           rightPaddingSize: widget.rightPaddingSize,
           onOpenSelection: _onOpenStartDateSelection,
           isVisible: _isStartDateVisible,
@@ -99,7 +107,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
           child: _SimpleDateField(
             reprFieldController: _reprEndDateFieldController,
             confirmButtonSize: widget.confirmButtonSize,
-            title: "End Date",
+            title: widget.endDateTitle,
             rightPaddingSize: widget.rightPaddingSize,
             onOpenSelection: _onOpenEndDateSelection,
             isVisible: _isEndDateVisible,
