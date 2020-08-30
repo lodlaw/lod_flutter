@@ -110,7 +110,18 @@ class BackgroundInput extends StatelessWidget {
             onChanged: onChanged,
             decoration: InputDecoration(
                 hintText: hintText,
-                contentPadding: EdgeInsets.only(top: 24, left: 12)),
+                border: Theme.of(context).inputDecorationTheme?.border,
+                contentPadding: EdgeInsets.only(
+                    top: 24,
+                    left: 12,
+                    right:
+                        Theme.of(context).inputDecorationTheme.contentPadding !=
+                                null
+                            ? Theme.of(context)
+                                .inputDecorationTheme
+                                .contentPadding
+                                .horizontal
+                            : 0)),
           ),
         ),
         if (title != null) _buildBorder(context)
@@ -132,9 +143,9 @@ class BackgroundInput extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle1.apply(
                 color: Theme.of(context)
                     .inputDecorationTheme
-                    .focusedBorder
-                    .borderSide
-                    .color)),
+                    ?.focusedBorder
+                    ?.borderSide
+                    ?.color)),
       ),
     );
   }

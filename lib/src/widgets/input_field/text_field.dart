@@ -4,7 +4,7 @@ import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
 class TextField extends StatefulWidget {
   final String defaultValue;
   final String title;
-  final Function(String) onChanged;
+  final ValueChanged<String> onChanged;
   final int maxLines;
   final TextEditingController controller;
   final String hintText;
