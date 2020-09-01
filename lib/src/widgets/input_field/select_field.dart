@@ -6,6 +6,9 @@ import 'input_wrapper.dart';
 /// The height of the selection border.
 const _modalHeight = 200.0;
 
+/// The padding between the primary input and secondary input
+const _inputSpacing = 8.0;
+
 class SelectField extends StatefulWidget {
   /// The categories to be selected from.
   final List<String> categories;
@@ -104,7 +107,7 @@ class _SelectFieldState extends State<SelectField> {
         height: _isCustomOptionVisible ? null : 0,
         duration: const Duration(milliseconds: 120),
         child: Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: const EdgeInsets.only(top: _inputSpacing),
           child: SingleChildScrollView(
             child: InputWrapper(
               title: widget.secondaryTitle,

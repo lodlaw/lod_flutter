@@ -33,6 +33,9 @@ class TextFieldWithUpload extends StatefulWidget {
   /// A list of photos.
   final List<Photo> initialPhotos;
 
+  /// Callback when delete button is tapped.
+  final ValueChanged<Photo> onTapDelete;
+
   /// Creates a text field with upload functionalities being on the right.
   ///
   /// Arguments [title], [onChanged], [hinText], [onSelect] must be provided.
@@ -46,6 +49,7 @@ class TextFieldWithUpload extends StatefulWidget {
     this.initialValue,
     this.controller,
     this.initialPhotos,
+    this.onTapDelete,
   })  : assert(title != null),
         assert(hintText != null),
         assert(onChanged != null),
@@ -95,11 +99,11 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
         Stack(
           children: [
             _TextField(
-              controller: _controller,
-              onFocusChanged: _setFocus,
-              hintText: widget.hintText,
-              title: widget.title,
-            ),
+                controller: _controller,
+                onFocusChanged: _setFocus,
+                hintText: widget.hintText,
+                title: widget.title,
+                onChanged: widget.onChanged),
             // the upload section will be positioned to the right
             Positioned.fill(
                 right: 0,
@@ -120,11 +124,19 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
     return Column(
       children: [
         SizedBox(
-          height: _uploadButtonSize,
+          height: _uploadButtonSize / 4,
         ),
         PhotoList(
           photos: _photos,
-          onTapDelete: (photo) {},
+          onTapDelete: widget.onTapDelete != null
+              ? (value) {
+                  setState(() {
+                    _photos =
+                        _photos.where((element) => element != value).toList();
+                  });
+                  widget.onTapDelete(value);
+                }
+              : null,
         )
       ],
     );
@@ -162,17 +174,22 @@ class _TextField extends StatelessWidget {
   /// The hint text of the field
   final String hintText;
 
+  /// Callback when value is changed
+  final ValueChanged<String> onChanged;
+
   /// Create a wrapper around the text editting theme with a content padding.
   const _TextField(
       {Key key,
       @required this.onFocusChanged,
       @required this.controller,
       @required this.hintText,
-      @required this.title})
+      @required this.title,
+      @required this.onChanged})
       : assert(onFocusChanged != null),
         assert(hintText != null),
         assert(controller != null),
         assert(title != null),
+        assert(onChanged != null),
         super(key: key);
 
   @override
@@ -185,6 +202,7 @@ class _TextField extends StatelessWidget {
         controller: controller,
         title: title,
         hintText: hintText,
+        onChanged: onChanged,
       ),
     );
 
