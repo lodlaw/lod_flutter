@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/scrolling_spinner.dart';
+import 'package:lod_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
 import 'input_wrapper.dart';
 

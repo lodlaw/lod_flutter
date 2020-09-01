@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_field.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_field.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
 import 'date_field.dart';
 

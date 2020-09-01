@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/utils/date_utils.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/scrolling_spinner.dart';
+import 'package:lod_flutter/src/utils/date_utils.dart';
+import 'package:lod_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
 export 'date_field.dart';
 export 'date_range_field.dart';

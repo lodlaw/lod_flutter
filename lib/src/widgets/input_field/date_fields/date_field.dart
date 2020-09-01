@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/lod_flutter.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_spacer.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
+import 'package:lod_flutter/lod_flutter.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_spacer.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
 class DateField extends StatefulWidget {
   /// The initial value of the field. Defaults to [DateTime.now].

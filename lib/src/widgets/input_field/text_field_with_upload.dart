@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide TextField;
 import 'package:image_picker/image_picker.dart';
-import 'package:lodlaw_flutter/src/widgets/data_display/photo_list.dart';
+import 'package:lod_flutter/src/widgets/data_display/photo_list.dart';
 
 import 'input_field.dart';
 

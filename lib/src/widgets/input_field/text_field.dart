@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide TextField;
-import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
 class TextField extends StatefulWidget {
   final String defaultValue;

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lodlaw_flutter/src/utils/date_utils.dart';
+import 'package:lod_flutter/src/utils/date_utils.dart';
 
 void main() {
   group('getDaysInMonth tests', () {

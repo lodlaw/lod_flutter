@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_field.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_field.dart';
 
 const _squeeze = 0.9;
 const _diameterRatio = 1.9;

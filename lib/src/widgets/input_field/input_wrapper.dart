@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_field.dart'
+import 'package:lod_flutter/src/widgets/input_field/input_field.dart'
     hide TextField;
 
 class InputWrapper extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_spacer.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
-import 'package:lodlaw_flutter/src/widgets/input_field/scrolling_spinner.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_spacer.dart';
+import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
+import 'package:lod_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
 typedef OnChangedCallback = void Function(double);
 
