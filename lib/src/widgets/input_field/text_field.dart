@@ -43,7 +43,7 @@ class _TextFieldState extends State<TextField> {
       maxLines: widget.maxLines,
       controller: widget.controller,
       onChanged: (value) {
-        print(value);
+        widget.onChanged(value);
       },
       editable: true,
     );
