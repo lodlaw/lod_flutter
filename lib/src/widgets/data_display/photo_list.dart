@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Defines the layout of the photo list
 const _gridConfigs = const SliverGridDelegateWithFixedCrossAxisCount(
   crossAxisCount: 2,
-  childAspectRatio: 6.5,
+  childAspectRatio: 5.5,
   mainAxisSpacing: 12.0,
   crossAxisSpacing: 10.0,
 );
@@ -14,7 +14,7 @@ const _gridConfigs = const SliverGridDelegateWithFixedCrossAxisCount(
 const _photoPopUpPadding = 16.0;
 
 /// Defines the size of the icon
-const _iconSize = 18.0;
+const _iconSize = 16.0;
 
 /// The photo source to be rendered from.d
 enum PhotoSource { network, file }
@@ -29,6 +29,11 @@ class Photo {
   final String path;
 
   Photo({this.source, this.path});
+
+  @override
+  bool operator ==(other) {
+    return source == other.source && path == other.path;
+  }
 }
 
 class PhotoList extends StatelessWidget {
@@ -117,7 +122,11 @@ class _PhotoItem extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(right: _iconSize / 2),
-                        child: Icon(Icons.image, size: _iconSize),
+                        child: Icon(
+                          Icons.image,
+                          size: _iconSize,
+                          color: textStyle.color,
+                        ),
                       ),
                       Text("Image #$index", style: textStyle)
                     ],
