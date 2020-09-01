@@ -8,7 +8,7 @@ typedef OnChangedCallback = void Function(double);
 class HoursField extends StatefulWidget {
   final int minHours;
   final int maxHours;
-  final double defaultValue;
+  final double initialValue;
   final String title;
   final OnChangedCallback onChanged;
 
@@ -16,7 +16,7 @@ class HoursField extends StatefulWidget {
       {Key key,
       this.minHours = 0,
       this.maxHours = 8,
-      this.defaultValue,
+      this.initialValue,
       this.title = "Hours",
       this.onChanged})
       : super(key: key);
@@ -34,8 +34,8 @@ class _HoursFieldState extends State<HoursField> {
 
     value = widget.maxHours.toDouble();
 
-    if (widget.defaultValue != null) {
-      value = widget.defaultValue;
+    if (widget.initialValue != null) {
+      value = widget.initialValue;
     }
   }
 
@@ -81,14 +81,14 @@ class _HoursFieldState extends State<HoursField> {
           widget.onChanged(value);
         });
       },
-      defaultValue: defaultValueString,
+      value: defaultValueString,
     );
   }
 
   Widget _buildMinutes(TextStyle textStyle, double defaultValue) {
     return ScrollingSpinner(
       items: _getMinutesString(),
-      defaultValue: _processNumber(defaultValue),
+      value: _processNumber(defaultValue),
       hintText: "mins",
       onChange: (minutes) {
         final newMinutes = double.parse(minutes) / 60;
