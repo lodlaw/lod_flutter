@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lodlaw_flutter/lodlaw_flutter.dart';
+import 'package:lodlaw_flutter/lod_flutter.dart';
 import 'package:lodlaw_flutter/src/widgets/input_field/input_spacer.dart';
 import 'package:lodlaw_flutter/src/widgets/input_field/input_wrapper.dart';
 
