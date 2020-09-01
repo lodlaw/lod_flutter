@@ -82,7 +82,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
       _dirtyValue = widget.initialValue;
     }
 
-    _updateRepr();
+    _updateRepr(onChangedCallback: false);
   }
 
   @override
@@ -184,13 +184,13 @@ class _DateRangeFieldState extends State<DateRangeField> {
     _updateRepr();
   }
 
-  void _updateRepr() {
+  void _updateRepr({bool onChangedCallback = true}) {
     final dateFormat = DateFormat('dd/MM/yyyy');
 
     _reprEndDateFieldController.text = dateFormat.format(_value.end);
     _reprStartDateFieldController.text = dateFormat.format(_value.start);
 
-    widget.onChanged(_value);
+    if (onChangedCallback) widget.onChanged(_value);
   }
 }
 
