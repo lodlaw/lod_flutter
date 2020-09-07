@@ -63,6 +63,8 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
           break;
         }
       }
+    } else if (widget.items.isNotEmpty) {
+      widget.onChange(widget.items[0]);
     }
   }
 
