@@ -56,7 +56,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
     super.initState();
 
     // find the position of the value and go to that position in the first render
-    if (widget.value != null) {
+    if (widget.value != null && widget.value.isNotEmpty) {
       for (int i = 0; i < widget.items.length; i++) {
         if (widget.items[i] == widget.value) {
           _scrollController = FixedExtentScrollController(initialItem: i);
@@ -64,7 +64,9 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
         }
       }
     } else if (widget.items.isNotEmpty) {
-      widget.onChange(widget.items[0]);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        widget.onChange(widget.items[0]);
+      });
     }
   }
 
