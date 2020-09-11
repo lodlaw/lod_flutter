@@ -45,18 +45,22 @@ class DateRangeField extends StatefulWidget {
   /// The title of the end date repr field.
   final String endDateTitle;
 
+  /// Whether or not the field can be amended
+  final bool editable;
+
   /// Creates a date range spinner that includes start date and end date
   ///
   /// Argument [onChanged] must not be null
-  const DateRangeField({
-    Key key,
-    this.rightPaddingSize = 30,
-    @required this.onChanged,
-    this.confirmButtonSize = 30,
-    this.initialValue,
-    this.startDateTitle = "Start Date*",
-    this.endDateTitle = "End Date",
-  })  : assert(onChanged != null),
+  const DateRangeField(
+      {Key key,
+      this.rightPaddingSize = 30,
+      @required this.onChanged,
+      this.confirmButtonSize = 30,
+      this.initialValue,
+      this.startDateTitle = "Start Date*",
+      this.endDateTitle = "End Date",
+      this.editable = true})
+      : assert(onChanged != null),
         super(key: key);
 
   @override
@@ -122,15 +126,19 @@ class _DateRangeFieldState extends State<DateRangeField> {
   }
 
   void _onOpenStartDateSelection() {
-    setState(() {
-      _isStartDateVisible = true;
-    });
+    if (widget.editable) {
+      setState(() {
+        _isStartDateVisible = true;
+      });
+    }
   }
 
   void _onOpenEndDateSelection() {
-    setState(() {
-      _isEndDateVisible = true;
-    });
+    if (widget.editable) {
+      setState(() {
+        _isEndDateVisible = true;
+      });
+    }
   }
 
   void _onCancelStartDateSelection() {

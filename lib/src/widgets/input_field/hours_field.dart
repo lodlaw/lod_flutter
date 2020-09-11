@@ -11,6 +11,7 @@ class HoursField extends StatefulWidget {
   final double initialValue;
   final String title;
   final OnChangedCallback onChanged;
+  final bool editable;
 
   const HoursField(
       {Key key,
@@ -18,7 +19,8 @@ class HoursField extends StatefulWidget {
       this.maxHours = 8,
       this.initialValue,
       this.title = "Hours",
-      this.onChanged})
+      this.onChanged,
+      this.editable = true})
       : super(key: key);
 
   @override
@@ -71,6 +73,7 @@ class _HoursFieldState extends State<HoursField> {
     final defaultValueString =
         defaultValue < 10 ? "0$defaultValue" : defaultValue.toString();
     return ScrollingSpinner(
+      disabled: !widget.editable,
       hintText: "hrs",
       items: _getHoursString(),
       onChange: (hours) {
@@ -87,6 +90,7 @@ class _HoursFieldState extends State<HoursField> {
 
   Widget _buildMinutes(TextStyle textStyle, double defaultValue) {
     return ScrollingSpinner(
+      disabled: !widget.editable,
       items: _getMinutesString(),
       value: _processNumber(defaultValue),
       hintText: "mins",

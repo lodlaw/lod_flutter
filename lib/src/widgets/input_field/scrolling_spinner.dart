@@ -31,6 +31,9 @@ class ScrollingSpinner extends StatefulWidget {
   /// Whether or not the spinner will loop if all options are exahusted.
   final bool looping;
 
+  /// Whether or not the scrolling is diabled
+  final bool disabled;
+
   /// An uncontrolled cupertino style loop spinner
   ScrollingSpinner({
     Key key,
@@ -41,6 +44,7 @@ class ScrollingSpinner extends StatefulWidget {
     this.value,
     this.hintText = "",
     this.looping = true,
+    this.disabled = false,
   })  : assert(hintText != null),
         super(key: key);
 
@@ -110,20 +114,22 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
           _SelectedBorder(
             height: _getItemHeight(),
           ),
-          CupertinoPicker(
-              scrollController: _scrollController,
-              itemExtent: _getItemHeight(),
-              onSelectedItemChanged: (index) {
-                widget.onChange(widget.items[index]);
-              },
-              squeeze: _squeeze,
-              diameterRatio: _diameterRatio,
-              looping: widget.looping,
-              children: widget.items
-                  .map((e) => SpinningItem(
-                        content: e,
-                      ))
-                  .toList()),
+          AbsorbPointer(
+              child: CupertinoPicker(
+                  scrollController: _scrollController,
+                  itemExtent: _getItemHeight(),
+                  onSelectedItemChanged: (index) {
+                    widget.onChange(widget.items[index]);
+                  },
+                  squeeze: _squeeze,
+                  diameterRatio: _diameterRatio,
+                  looping: widget.looping,
+                  children: widget.items
+                      .map((e) => SpinningItem(
+                            content: e,
+                          ))
+                      .toList()),
+              absorbing: widget.disabled),
         ],
       ),
     );

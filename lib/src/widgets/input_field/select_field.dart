@@ -37,6 +37,9 @@ class SelectField extends StatefulWidget {
   /// The hint text of the secondary field.
   final String secondaryHintText;
 
+  /// Whether or not the field is editable
+  final bool editable;
+
   /// Creates a select field with an "other" value option.
   ///
   /// Arguments [ categories], [hintText],[secondaryHintText] must not be null.
@@ -53,7 +56,8 @@ class SelectField extends StatefulWidget {
       this.initialValue,
       this.initialSecondaryValue,
       this.secondaryTitle,
-      this.secondaryHintText})
+      this.secondaryHintText,
+      this.editable = true})
       : assert(categories != null),
         assert(hintText != null),
         assert(title != null),
@@ -112,7 +116,7 @@ class _SelectFieldState extends State<SelectField> {
             child: InputWrapper(
               title: widget.secondaryTitle,
               controller: _customOptionController,
-              editable: true,
+              editable: widget.editable,
               hintText: widget.secondaryHintText,
               onChanged: (value) => _propogateFeedback(),
             ),
@@ -128,22 +132,25 @@ class _SelectFieldState extends State<SelectField> {
   }
 
   void _onSelect() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            height: _modalHeight,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child: ScrollingSpinner(
+    if (widget.editable) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
               height: _modalHeight,
-              width: double.infinity,
-              items: widget.categories,
-              onChange: _setValue,
-              value: _inputController.text,
-              looping: false,
-            ),
-          );
-        });
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(12)),
+              child: ScrollingSpinner(
+                height: _modalHeight,
+                width: double.infinity,
+                items: widget.categories,
+                onChange: _setValue,
+                value: _inputController.text,
+                looping: false,
+              ),
+            );
+          });
+    }
   }
 
   void _setValue(String value) {
