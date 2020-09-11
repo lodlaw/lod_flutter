@@ -48,13 +48,14 @@ class DateCard extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: DateCardButton(
-                          iconData: Icons.close,
-                          onPressed: onTapDelete,
+                      if (onTapDelete != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: DateCardButton(
+                            iconData: Icons.close,
+                            onPressed: onTapDelete,
+                          ),
                         ),
-                      ),
                       IconButtonWithOpenContainerTransition(
                         iconData: Icons.edit,
                         screen: editScreen,
