@@ -290,6 +290,7 @@ class _SimpleDateField extends StatelessWidget {
 
     return AnimatedContainer(
       height: fieldHeight,
+      key: ValueKey(isVisible ? 'visible' : 'notVisible'),
       duration: const Duration(milliseconds: 250),
       child: SingleChildScrollView(
         child: Row(
