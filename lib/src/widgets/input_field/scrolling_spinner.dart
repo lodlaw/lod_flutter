@@ -115,6 +115,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
             height: _getItemHeight(),
           ),
           AbsorbPointer(
+              key: ValueKey('absorbing${widget.disabled ? "true" : "false"}'),
               child: CupertinoPicker(
                   scrollController: _scrollController,
                   itemExtent: _getItemHeight(),
