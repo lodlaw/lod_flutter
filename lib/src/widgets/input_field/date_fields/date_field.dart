@@ -64,6 +64,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildDayScroller(TextStyle textStyle) {
     return DayScroller(
+      key: ValueKey('dayPicker'),
       date: value,
       onChanged: (day) {
         setState(() {
@@ -77,6 +78,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildMonthScroller(TextStyle textStyle) {
     return MonthScroller(
+      key: ValueKey('monthPicker'),
       onChanged: (month) {
         final newDate = DateTime(value.year, month, value.day);
 
@@ -100,6 +102,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildYearScroller(TextStyle textStyle) {
     return YearScroller(
+      key: ValueKey('yearPicker'),
       onChanged: (year) {
         setState(() {
           value = DateTime(year, value.month, value.day);

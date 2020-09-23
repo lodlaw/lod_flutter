@@ -73,6 +73,7 @@ class _HoursFieldState extends State<HoursField> {
     final defaultValueString =
         defaultValue < 10 ? "0$defaultValue" : defaultValue.toString();
     return ScrollingSpinner(
+      key: ValueKey('hoursPicker'),
       disabled: !widget.editable,
       hintText: "hrs",
       items: _getHoursString(),
@@ -90,6 +91,7 @@ class _HoursFieldState extends State<HoursField> {
 
   Widget _buildMinutes(TextStyle textStyle, double defaultValue) {
     return ScrollingSpinner(
+      key: ValueKey('minutesPicker'),
       disabled: !widget.editable,
       items: _getMinutesString(),
       value: _processNumber(defaultValue),

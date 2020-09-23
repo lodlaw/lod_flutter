@@ -96,6 +96,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
       children: [
         Expanded(
             child: _SimpleDateField(
+          key: ValueKey('startDatePicker'),
           reprFieldController: _reprStartDateFieldController,
           confirmButtonSize: widget.confirmButtonSize,
           title: widget.startDateTitle,
@@ -109,6 +110,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
         )),
         Expanded(
           child: _SimpleDateField(
+            key: ValueKey('endDatePicker'),
             reprFieldController: _reprEndDateFieldController,
             confirmButtonSize: widget.confirmButtonSize,
             title: widget.endDateTitle,

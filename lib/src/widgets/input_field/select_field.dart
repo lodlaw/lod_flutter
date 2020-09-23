@@ -137,6 +137,7 @@ class _SelectFieldState extends State<SelectField> {
           context: context,
           builder: (context) {
             return Container(
+              key: ValueKey('modalBottomSheet'),
               height: _modalHeight,
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(12)),
