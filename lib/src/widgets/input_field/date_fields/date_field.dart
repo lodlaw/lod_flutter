@@ -13,6 +13,9 @@ class DateField extends StatefulWidget {
   /// Called when the value of the field is changed.
   final void Function(DateTime) onChanged;
 
+  /// The identifier of the field
+  final keyPrefix;
+
   /// Creates an uncontrolled date field.
   ///
   /// The [onChanged] argument must not be null.
@@ -23,6 +26,7 @@ class DateField extends StatefulWidget {
     @required this.onChanged,
     this.initialValue,
     this.title = "Date",
+    this.keyPrefix = "",
   })  : assert(onChanged != null),
         super(key: key);
 
@@ -64,7 +68,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildDayScroller(TextStyle textStyle) {
     return DayScroller(
-      key: ValueKey('dayPicker'),
+      key: ValueKey('${widget.keyPrefix}dayPicker'),
       date: value,
       onChanged: (day) {
         setState(() {
@@ -78,7 +82,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildMonthScroller(TextStyle textStyle) {
     return MonthScroller(
-      key: ValueKey('monthPicker'),
+      key: ValueKey('${widget.keyPrefix}monthPicker'),
       onChanged: (month) {
         final newDate = DateTime(value.year, month, value.day);
 
@@ -102,7 +106,7 @@ class _DateFieldState extends State<DateField> {
 
   Widget _buildYearScroller(TextStyle textStyle) {
     return YearScroller(
-      key: ValueKey('yearPicker'),
+      key: ValueKey('${widget.keyPrefix}yearPicker'),
       onChanged: (year) {
         setState(() {
           value = DateTime(year, value.month, value.day);

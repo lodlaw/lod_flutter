@@ -97,6 +97,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
         Expanded(
             child: _SimpleDateField(
           key: ValueKey('startDatePicker'),
+          keyPrefix: 'startDatePicker',
           reprFieldController: _reprStartDateFieldController,
           confirmButtonSize: widget.confirmButtonSize,
           title: widget.startDateTitle,
@@ -111,6 +112,7 @@ class _DateRangeFieldState extends State<DateRangeField> {
         Expanded(
           child: _SimpleDateField(
             key: ValueKey('endDatePicker'),
+            keyPrefix: 'endDatePicker',
             reprFieldController: _reprEndDateFieldController,
             confirmButtonSize: widget.confirmButtonSize,
             title: widget.endDateTitle,
@@ -236,6 +238,9 @@ class _SimpleDateField extends StatelessWidget {
   /// The initial value of the field
   final DateTime initialValue;
 
+  /// The identifier of the field
+  final String keyPrefix;
+
   /// Creates a repr component and selector component for a date.
   ///
   /// All arguments are required and not null except [initialValue].
@@ -251,6 +256,7 @@ class _SimpleDateField extends StatelessWidget {
     @required this.onChanged,
     @required this.onTapOk,
     this.initialValue,
+    this.keyPrefix = "",
   })  : assert(rightPaddingSize != null),
         assert(title != null),
         assert(onOpenSelection != null),
@@ -301,6 +307,7 @@ class _SimpleDateField extends StatelessWidget {
                 title: null,
                 onChanged: onChanged,
                 initialValue: initialValue,
+                keyPrefix: keyPrefix,
               ),
             ),
             _ConfirmButton(
