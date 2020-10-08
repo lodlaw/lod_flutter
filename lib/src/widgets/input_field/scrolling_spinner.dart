@@ -128,6 +128,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
                   children: widget.items
                       .map((e) => SpinningItem(
                             content: e,
+                            key: ValueKey(e == widget.value ? 'selected$e' : e),
                           ))
                       .toList()),
               absorbing: widget.disabled),
