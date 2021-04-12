@@ -23,17 +23,23 @@ enum PhotoSource { network, file }
 @immutable
 class Photo {
   /// The source of the photo.
-  final PhotoSource source;
+  final PhotoSource? source;
 
   /// The path to the photo source.
-  final String path;
+  final String? path;
 
   Photo({this.source, this.path});
 
   @override
   bool operator ==(other) {
-    return source == other.source && path == other.path;
+    if (other is Photo) {
+      return source == other.source && path == other.path;
+    }
+    return false;
   }
+
+  @override
+  int get hashCode => super.hashCode;
 }
 
 class PhotoList extends StatelessWidget {
@@ -41,14 +47,13 @@ class PhotoList extends StatelessWidget {
   final List<Photo> photos;
 
   /// Callback when the delete button is tapped.
-  final Function(Photo) onTapDelete;
+  final Function(Photo)? onTapDelete;
 
   /// Renders a photo list.
   ///
   /// [photos] must not be null.
-  const PhotoList({Key key, @required this.photos, this.onTapDelete})
-      : assert(photos != null),
-        super(key: key);
+  const PhotoList({Key? key, required this.photos, this.onTapDelete})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +67,7 @@ class PhotoList extends StatelessWidget {
 
         return _PhotoItem(
           photo: photos[index],
-          onTapDelete: onTapDelete != null ? () => onTapDelete(photo) : null,
+          onTapDelete: onTapDelete != null ? () => onTapDelete!(photo) : null,
           index: index,
         );
       },
@@ -75,7 +80,7 @@ class _PhotoItem extends StatelessWidget {
   final Photo photo;
 
   /// Callback when the delete button is tapped.
-  final Function onTapDelete;
+  final Function? onTapDelete;
 
   /// The index of the photo in the photo list
   final int index;
@@ -86,22 +91,21 @@ class _PhotoItem extends StatelessWidget {
   ///
   /// Delete button will be hidden if [onTapDelete] is null.
   const _PhotoItem({
-    Key key,
-    @required this.photo,
-    @required this.index,
+    Key? key,
+    required this.photo,
+    required this.index,
     this.onTapDelete,
-  })  : assert(photo != null),
-        assert(index != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isRemovable = onTapDelete != null;
 
-    final inputBorderSide = theme.inputDecorationTheme.focusedBorder.borderSide;
+    final inputBorderSide =
+        theme.inputDecorationTheme.focusedBorder!.borderSide;
 
-    final textStyle = theme.textTheme.button;
+    final textStyle = theme.textTheme.button!;
 
     return Stack(
       children: <Widget>[
@@ -155,7 +159,7 @@ class _PhotoItem extends StatelessWidget {
               icon: Icon(Icons.close),
               splashRadius: _iconSize,
               padding: EdgeInsets.zero,
-              onPressed: onTapDelete,
+              onPressed: onTapDelete as void Function()?,
             ),
           ],
         ));
@@ -166,9 +170,9 @@ class _PhotoItem extends StatelessWidget {
 
     // get the appropriate image renderer
     if (photo.source == PhotoSource.file) {
-      image = Image.file(File(photo.path));
+      image = Image.file(File(photo.path!));
     } else {
-      image = Image.network(photo.path);
+      image = Image.network(photo.path!);
     }
 
     showModalBottomSheet(

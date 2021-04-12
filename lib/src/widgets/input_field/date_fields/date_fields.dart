@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DateUtils;
 import 'package:lod_flutter/src/utils/date_utils.dart';
 import 'package:lod_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
@@ -12,7 +12,7 @@ abstract class DateScrollerAttributes {
   Function(int) get onChanged;
 
   /// Value of the scroller.
-  int get value;
+  int? get value;
 }
 
 class DayScroller extends StatelessWidget implements DateScrollerAttributes {
@@ -20,10 +20,10 @@ class DayScroller extends StatelessWidget implements DateScrollerAttributes {
   final Function(int) onChanged;
 
   @override
-  final int value;
+  final int? value;
 
   /// The date in which the day is in.
-  final DateTime date;
+  final DateTime? date;
 
   /// Creates a cupertino-style day scroller.
   ///
@@ -31,14 +31,13 @@ class DayScroller extends StatelessWidget implements DateScrollerAttributes {
   ///
   /// The number of days would be reflected reactively based one [date].
   const DayScroller({
-    Key key,
-    @required this.onChanged,
-    @required this.date,
+    Key? key,
+    required this.onChanged,
+    required this.date,
     this.value,
-  })  : assert(onChanged != null),
-        super(key: key);
+  }) : super(key: key);
 
-  int get numOfDaysInMonth => DateUtils.getDaysInMonth(date).length;
+  int get numOfDaysInMonth => DateUtils.getDaysInMonth(date!).length;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class DayScroller extends StatelessWidget implements DateScrollerAttributes {
 
     return ScrollingSpinner(
       items: items,
-      value: processNumber(value),
+      value: processNumber(value!),
       hintText: "dd",
       onChange: (day) => onChanged(int.parse(day)),
     );
@@ -61,14 +60,13 @@ class MonthScroller extends StatelessWidget implements DateScrollerAttributes {
   final Function(int) onChanged;
 
   @override
-  final int value;
+  final int? value;
 
   /// Creates a cupertino-style month scroller.
   ///
   /// Argument [onChanged] must not be null.
-  const MonthScroller({Key key, @required this.onChanged, this.value})
-      : assert(onChanged != null),
-        super(key: key);
+  const MonthScroller({Key? key, required this.onChanged, this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class MonthScroller extends StatelessWidget implements DateScrollerAttributes {
       hintText: "mm",
       onChange: (month) => onChanged(int.parse(month)),
       items: items,
-      value: processNumber(value),
+      value: processNumber(value!),
     );
   }
 }
@@ -91,14 +89,13 @@ class YearScroller extends StatelessWidget implements DateScrollerAttributes {
   final Function(int) onChanged;
 
   @override
-  final int value;
+  final int? value;
 
   /// Creates a cupertino-style month scroller.
   ///
   /// Argument [onChanged] must not be null.
-  const YearScroller({Key key, @required this.onChanged, this.value})
-      : assert(onChanged != null),
-        super(key: key);
+  const YearScroller({Key? key, required this.onChanged, this.value})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

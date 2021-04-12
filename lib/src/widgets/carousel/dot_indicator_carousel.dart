@@ -28,15 +28,13 @@ class DotIndicatorCarousel extends StatefulWidget {
   ///
   /// [itemCount] and [itemBuilder] must not be null.
   const DotIndicatorCarousel(
-      {Key key,
-      this.itemCount,
-      this.itemBuilder,
+      {Key? key,
+      required this.itemCount,
+      required this.itemBuilder,
       this.dotColor = Colors.black,
       this.dotSize = 8,
       this.dotSpace = 8})
-      : assert(itemCount != null),
-        assert(itemBuilder != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   _DotIndicatorCarouselState createState() => _DotIndicatorCarouselState();

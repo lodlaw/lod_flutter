@@ -3,17 +3,17 @@ import 'package:lod_flutter/src/widgets/input_field/input_field.dart'
     hide TextField;
 
 class InputWrapper extends StatelessWidget {
-  final Widget input;
-  final String title;
-  final String hintText;
+  final Widget? input;
+  final String? title;
+  final String? hintText;
   final bool editable;
-  final Function(String value) onChanged;
-  final Function onTap;
-  final TextEditingController controller;
+  final Function(String value)? onChanged;
+  final Function? onTap;
+  final TextEditingController? controller;
   final int maxLines;
 
   const InputWrapper(
-      {Key key,
+      {Key? key,
       this.input,
       this.title,
       this.hintText = "",
@@ -72,16 +72,16 @@ class InputWrapper extends StatelessWidget {
 }
 
 class BackgroundInput extends StatelessWidget {
-  final String hintText;
-  final bool editable;
-  final Function(String value) onChanged;
-  final Function onTap;
-  final TextEditingController controller;
-  final String title;
+  final String? hintText;
+  final bool? editable;
+  final Function(String value)? onChanged;
+  final Function? onTap;
+  final TextEditingController? controller;
+  final String? title;
   final int maxLines;
 
   const BackgroundInput(
-      {Key key,
+      {Key? key,
       this.hintText,
       this.editable,
       this.onChanged,
@@ -96,21 +96,21 @@ class BackgroundInput extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: ((editable || onTap != null) && maxLines != 1)
+          height: ((editable! || onTap != null) && maxLines != 1)
               ? null
               : InputField.height,
           margin: EdgeInsets.only(
               top: InputField.marginTop +
-                  ((editable || onTap != null) ? 0 : InputField.height)),
+                  ((editable! || onTap != null) ? 0 : InputField.height)),
           child: TextField(
-            onTap: onTap,
+            onTap: onTap as void Function()?,
             maxLines: maxLines,
             controller: controller,
-            readOnly: !editable,
+            readOnly: !editable!,
             onChanged: onChanged,
             decoration: InputDecoration(
                 hintText: hintText,
-                border: Theme.of(context).inputDecorationTheme?.border,
+                border: Theme.of(context).inputDecorationTheme.border,
                 contentPadding: EdgeInsets.only(
                     top: 24,
                     left: 12,
@@ -119,7 +119,7 @@ class BackgroundInput extends StatelessWidget {
                                 null
                             ? Theme.of(context)
                                 .inputDecorationTheme
-                                .contentPadding
+                                .contentPadding!
                                 .horizontal
                             : 0)),
           ),
@@ -132,20 +132,20 @@ class BackgroundInput extends StatelessWidget {
   Widget _buildBorder(BuildContext context) {
     final padding = EdgeInsets.symmetric(
       horizontal: InputField.marginTop,
-    ).copyWith(top: (editable || onTap != null) ? 0 : InputField.height);
+    ).copyWith(top: (editable! || onTap != null) ? 0 : InputField.height);
 
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       margin: EdgeInsets.only(left: 12),
       child: Padding(
         padding: padding,
-        child: Text(title,
-            style: Theme.of(context).textTheme.subtitle1.apply(
+        child: Text(title!,
+            style: Theme.of(context).textTheme.subtitle1!.apply(
                 color: Theme.of(context)
                     .inputDecorationTheme
-                    ?.focusedBorder
+                    .focusedBorder
                     ?.borderSide
-                    ?.color)),
+                    .color)),
       ),
     );
   }

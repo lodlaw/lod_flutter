@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 showConfirmationBottomSheet(
-    {@required BuildContext context,
-    @required String title,
+    {required BuildContext context,
+    required String title,
     String okText = "CONTINUE",
     String cancelText = "CANCEL",
-    Function(BuildContext context) onOk,
-    Function(BuildContext context) onCancel}) {
+    Function(BuildContext context)? onOk,
+    Function(BuildContext context)? onCancel}) {
   showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
       builder: (context) {
-        final textStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+        final textStyle = Theme.of(context).textTheme.subtitle1!.copyWith(
               letterSpacing: 1.4,
               wordSpacing: 1.4,
             );
         final buttonTextStyle = textStyle.apply(fontSizeFactor: 0.9);
 
-        final color = textStyle.color;
+        final color = textStyle.color!;
         final cancelColor = color.withOpacity(0.65);
 
         return Padding(
@@ -48,7 +48,7 @@ showConfirmationBottomSheet(
                       cancelText,
                       style: buttonTextStyle.copyWith(color: cancelColor),
                     ),
-                    onPressed: () => onCancel(context),
+                    onPressed: () => onCancel!(context),
                     textColor: cancelColor,
                     borderSide: BorderSide(color: cancelColor),
                     highlightedBorderColor: cancelColor,
@@ -59,7 +59,7 @@ showConfirmationBottomSheet(
                       okText,
                       style: buttonTextStyle,
                     ),
-                    onPressed: () => onOk(context),
+                    onPressed: () => onOk!(context),
                     textColor: color,
                     borderSide: BorderSide(color: color),
                     highlightedBorderColor: color,

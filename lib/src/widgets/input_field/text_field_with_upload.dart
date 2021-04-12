@@ -10,7 +10,7 @@ const _maxLines = 3;
 
 class TextFieldWithUpload extends StatefulWidget {
   /// The initial value of the field
-  final String initialValue;
+  final String? initialValue;
 
   /// The title of the field.
   final String title;
@@ -22,50 +22,45 @@ class TextFieldWithUpload extends StatefulWidget {
   final String hintText;
 
   /// The controller of the field.
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   /// Callback when an image is picked.
-  final Future<Photo> Function(PickedFile) onSelectFile;
+  final Future<Photo> Function(PickedFile?) onSelectFile;
 
   /// The source of the list of photos.
   final PhotoSource photoSource;
 
   /// A list of photos.
-  final List<Photo> initialPhotos;
+  final List<Photo>? initialPhotos;
 
   /// Callback when delete button is tapped.
-  final ValueChanged<Photo> onTapDelete;
+  final ValueChanged<Photo>? onTapDelete;
 
   /// Creates a text field with upload functionalities being on the right.
   ///
   /// Arguments [title], [onChanged], [hinText], [onSelect] must be provided.
   const TextFieldWithUpload({
-    Key key,
-    @required this.title,
-    @required this.onChanged,
-    @required this.hintText,
-    @required this.onSelectFile,
+    Key? key,
+    required this.title,
+    required this.onChanged,
+    required this.hintText,
+    required this.onSelectFile,
     this.photoSource = PhotoSource.network,
     this.initialValue,
     this.controller,
     this.initialPhotos,
     this.onTapDelete,
-  })  : assert(title != null),
-        assert(hintText != null),
-        assert(onChanged != null),
-        assert(onSelectFile != null),
-        assert(photoSource != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _TextFieldWithUploadState createState() => _TextFieldWithUploadState();
 }
 
 class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
-  TextEditingController _controller = TextEditingController();
-  String _value = "";
+  TextEditingController? _controller = TextEditingController();
+  String? _value = "";
   final _picker = ImagePicker();
-  List<Photo> _photos = [];
+  List<Photo>? _photos = [];
 
   /// whether or not the input is being focused on because we need to update the
   /// UI for update section
@@ -89,7 +84,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
     }
 
     // set the initial UI
-    _controller.text = _value;
+    _controller!.text = _value!;
   }
 
   @override
@@ -99,7 +94,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
         Stack(
           children: [
             _TextField(
-                controller: _controller,
+                controller: _controller!,
                 onFocusChanged: _setFocus,
                 hintText: widget.hintText,
                 title: widget.title,
@@ -115,7 +110,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
                 )),
           ],
         ),
-        if (_photos.isNotEmpty) _buildPhotoList()
+        if (_photos!.isNotEmpty) _buildPhotoList()
       ],
     );
   }
@@ -127,14 +122,14 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
           height: _uploadButtonSize / 4,
         ),
         PhotoList(
-          photos: _photos,
+          photos: _photos!,
           onTapDelete: widget.onTapDelete != null
               ? (value) {
                   setState(() {
                     _photos =
-                        _photos.where((element) => element != value).toList();
+                        _photos!.where((element) => element != value).toList();
                   });
-                  widget.onTapDelete(value);
+                  widget.onTapDelete!(value);
                 }
               : null,
         )
@@ -143,6 +138,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
   }
 
   Future _onTapCameraUpload() async => await _onTapUpload(ImageSource.camera);
+
   Future _onTapPhotoUpload() async => await _onTapUpload(ImageSource.gallery);
 
   Future _onTapUpload(ImageSource source) async {
@@ -150,7 +146,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
     final savedFile = await widget.onSelectFile(pickedFile);
 
     setState(() {
-      _photos = [..._photos, savedFile];
+      _photos = [..._photos!, savedFile];
     });
   }
 
@@ -179,18 +175,13 @@ class _TextField extends StatelessWidget {
 
   /// Create a wrapper around the text editting theme with a content padding.
   const _TextField(
-      {Key key,
-      @required this.onFocusChanged,
-      @required this.controller,
-      @required this.hintText,
-      @required this.title,
-      @required this.onChanged})
-      : assert(onFocusChanged != null),
-        assert(hintText != null),
-        assert(controller != null),
-        assert(title != null),
-        assert(onChanged != null),
-        super(key: key);
+      {Key? key,
+      required this.onFocusChanged,
+      required this.controller,
+      required this.hintText,
+      required this.title,
+      required this.onChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -233,10 +224,10 @@ class _UploadSection extends StatelessWidget {
   final bool isFocused;
 
   /// Callback when the camera button is tapped.
-  final Function onTapCameraUpload;
+  final Function? onTapCameraUpload;
 
   /// Callback when the photo button is tapped.
-  final Function onTapPhotoUpload;
+  final Function? onTapPhotoUpload;
 
   /// Creates an upload section with camera on top of the photo.
   ///
@@ -246,12 +237,11 @@ class _UploadSection extends StatelessWidget {
   /// Either [onTapCameraUpload] or [onTapPhotoUpload] must be present. If one
   /// is not present, the functionality will be disabled.
   const _UploadSection(
-      {Key key,
-      @required this.isFocused,
+      {Key? key,
+      required this.isFocused,
       this.onTapCameraUpload,
       this.onTapPhotoUpload})
-      : assert(isFocused != null),
-        assert(onTapCameraUpload != null || onTapPhotoUpload != null),
+      : assert(onTapCameraUpload != null || onTapPhotoUpload != null),
         super(key: key);
 
   @override
@@ -262,10 +252,10 @@ class _UploadSection extends StatelessWidget {
     final focusedBorder = inputDecorationTheme.focusedBorder;
 
     final borderColor = isFocused
-        ? focusedBorder.borderSide.color
-        : enabledBorder.borderSide.color;
+        ? focusedBorder!.borderSide.color
+        : enabledBorder!.borderSide.color;
 
-    final borderWidth = inputDecorationTheme.enabledBorder.borderSide.width;
+    final borderWidth = inputDecorationTheme.enabledBorder!.borderSide.width;
 
     return Container(
       width: _uploadButtonSize,
@@ -288,13 +278,13 @@ class _UploadSection extends StatelessWidget {
               Expanded(
                   child: _UploadButton(
                 iconData: Icons.camera_alt,
-                onTap: onTapCameraUpload,
+                onTap: onTapCameraUpload!,
               )),
             if (onTapPhotoUpload != null)
               Expanded(
                   child: _UploadButton(
                 iconData: Icons.photo,
-                onTap: onTapPhotoUpload,
+                onTap: onTapPhotoUpload!,
               )),
           ],
         ),
@@ -313,10 +303,8 @@ class _UploadButton extends StatelessWidget {
   /// Creates an upload button for a given icon.
   ///
   /// [onTap] and [iconData] must not be null.
-  const _UploadButton({Key key, @required this.iconData, @required this.onTap})
-      : assert(iconData != null),
-        assert(onTap != null),
-        super(key: key);
+  const _UploadButton({Key? key, required this.iconData, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -327,7 +315,7 @@ class _UploadButton extends StatelessWidget {
 
     return InkWell(
       borderRadius: BorderRadius.only(topRight: InputField.borderRadius),
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       child: buttonWrapper,
     );
   }

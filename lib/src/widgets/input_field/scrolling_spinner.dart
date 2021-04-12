@@ -12,13 +12,13 @@ class ScrollingSpinner extends StatefulWidget {
   final double width;
 
   /// Callback when an item is changed
-  final Function(String item) onChange;
+  final Function(String item)? onChange;
 
   /// A list of items to be rendered
-  final List<String> items;
+  final List<String>? items;
 
   /// The current value of the spinner
-  final String value;
+  final String? value;
 
   /// Hint text for the spinner.
   final String hintText;
@@ -26,7 +26,7 @@ class ScrollingSpinner extends StatefulWidget {
   /// The height of the spinner.
   ///
   /// If it's null, default to [_numOfRenderedElements * InputField.height]
-  final double height;
+  final double? height;
 
   /// Whether or not the spinner will loop if all options are exahusted.
   final bool looping;
@@ -36,7 +36,7 @@ class ScrollingSpinner extends StatefulWidget {
 
   /// An uncontrolled cupertino style loop spinner
   ScrollingSpinner({
-    Key key,
+    Key? key,
     this.width = _width,
     this.height,
     this.items,
@@ -45,8 +45,7 @@ class ScrollingSpinner extends StatefulWidget {
     this.hintText = "",
     this.looping = true,
     this.disabled = false,
-  })  : assert(hintText != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _ScrollingSpinnerState createState() => _ScrollingSpinnerState();
@@ -60,16 +59,16 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
     super.initState();
 
     // find the position of the value and go to that position in the first render
-    if (widget.value != null && widget.value.isNotEmpty) {
-      for (int i = 0; i < widget.items.length; i++) {
-        if (widget.items[i] == widget.value) {
+    if (widget.value != null && widget.value!.isNotEmpty) {
+      for (int i = 0; i < widget.items!.length; i++) {
+        if (widget.items![i] == widget.value) {
           _scrollController = FixedExtentScrollController(initialItem: i);
           break;
         }
       }
-    } else if (widget.items.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        widget.onChange(widget.items[0]);
+    } else if (widget.items!.isNotEmpty) {
+      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+        widget.onChange!(widget.items![0]);
       });
     }
   }
@@ -80,12 +79,12 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
 
     // if list of items has changed, find the new position for the updated value
     // and go to that position
-    if (oldWidget.items.length != widget.items.length) {
-      int updatedPosition;
+    if (oldWidget.items!.length != widget.items!.length) {
+      int? updatedPosition;
 
       // find the new position of the item
-      for (int i = 0; i < widget.items.length; i++) {
-        if (widget.items[i] == widget.value) {
+      for (int i = 0; i < widget.items!.length; i++) {
+        if (widget.items![i] == widget.value) {
           updatedPosition = i;
         }
       }
@@ -93,8 +92,8 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
       if (updatedPosition != null) {
         // this must be rendered in the next frame because jumpToItem will be
         // rendered during setState
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _scrollController.jumpToItem(updatedPosition);
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          _scrollController.jumpToItem(updatedPosition!);
         });
       }
     }
@@ -120,12 +119,12 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
                   scrollController: _scrollController,
                   itemExtent: _getItemHeight(),
                   onSelectedItemChanged: (index) {
-                    widget.onChange(widget.items[index]);
+                    widget.onChange!(widget.items![index]);
                   },
                   squeeze: _squeeze,
                   diameterRatio: _diameterRatio,
                   looping: widget.looping,
-                  children: widget.items
+                  children: widget.items!
                       .map((e) => SpinningItem(
                             content: e,
                             key: ValueKey(e == widget.value ? 'selected$e' : e),
@@ -159,15 +158,15 @@ class _SelectedBorder extends StatelessWidget {
   ///
   /// [height] must not be null.
   const _SelectedBorder({
-    Key key,
-    @required this.height,
-  })  : assert(height != null),
+    Key? key,
+    required this.height,
+  })   :
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final color =
-        Theme.of(context).inputDecorationTheme.focusedBorder.borderSide.color;
+        Theme.of(context).inputDecorationTheme.focusedBorder!.borderSide.color;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -188,9 +187,7 @@ class SpinningItem extends StatelessWidget {
   final String content;
 
   /// The spinning item
-  const SpinningItem({Key key, @required this.content})
-      : assert(content != null),
-        super(key: key);
+  const SpinningItem({Key? key, required this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -214,9 +211,7 @@ class HintText extends StatelessWidget {
 
   /// The hint text to be displayed under the selected item of the
   /// spinner
-  const HintText({Key key, @required this.content})
-      : assert(content != null),
-        super(key: key);
+  const HintText({Key? key, required this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +223,7 @@ class HintText extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
-                .subtitle1
+                .subtitle1!
                 .apply(fontSizeFactor: 0.9),
           )),
     );

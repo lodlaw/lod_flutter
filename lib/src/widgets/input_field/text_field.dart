@@ -2,15 +2,15 @@ import 'package:flutter/material.dart' hide TextField;
 import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
 class TextField extends StatefulWidget {
-  final String defaultValue;
+  final String? defaultValue;
   final String title;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
   final int maxLines;
-  final TextEditingController controller;
-  final String hintText;
+  final TextEditingController? controller;
+  final String? hintText;
 
   const TextField(
-      {Key key,
+      {Key? key,
       this.defaultValue,
       this.title = "Text Field",
       this.onChanged,
@@ -24,7 +24,7 @@ class TextField extends StatefulWidget {
 }
 
 class _TextFieldState extends State<TextField> {
-  String value = "";
+  String? value = "";
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _TextFieldState extends State<TextField> {
       maxLines: widget.maxLines,
       controller: widget.controller,
       onChanged: (value) {
-        widget.onChanged(value);
+        widget.onChanged!(value);
       },
       editable: true,
     );

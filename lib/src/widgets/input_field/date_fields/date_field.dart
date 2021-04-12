@@ -5,13 +5,13 @@ import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
 class DateField extends StatefulWidget {
   /// The initial value of the field. Defaults to [DateTime.now].
-  final DateTime initialValue;
+  final DateTime? initialValue;
 
   /// The title of the field.
-  final String title;
+  final String? title;
 
   /// Called when the value of the field is changed.
-  final void Function(DateTime) onChanged;
+  final ValueChanged<DateTime> onChanged;
 
   /// The identifier of the field
   final keyPrefix;
@@ -22,13 +22,12 @@ class DateField extends StatefulWidget {
   ///
   /// If [title] is null, the spinners will be horizontally centered.
   const DateField({
-    Key key,
-    @required this.onChanged,
+    Key? key,
+    required this.onChanged,
     this.initialValue,
     this.title = "Date",
     this.keyPrefix = "",
-  })  : assert(onChanged != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _DateFieldState createState() => _DateFieldState();
@@ -41,8 +40,9 @@ class _DateFieldState extends State<DateField> {
   void initState() {
     super.initState();
 
-    if (widget.initialValue != null) {
-      value = widget.initialValue;
+    final initialValue = widget.initialValue;
+    if (initialValue != null) {
+      value = initialValue;
     }
   }
 
@@ -66,7 +66,7 @@ class _DateFieldState extends State<DateField> {
     );
   }
 
-  Widget _buildDayScroller(TextStyle textStyle) {
+  Widget _buildDayScroller(TextStyle? textStyle) {
     return DayScroller(
       key: ValueKey('${widget.keyPrefix}dayPicker'),
       date: value,
@@ -80,7 +80,7 @@ class _DateFieldState extends State<DateField> {
     );
   }
 
-  Widget _buildMonthScroller(TextStyle textStyle) {
+  Widget _buildMonthScroller(TextStyle? textStyle) {
     return MonthScroller(
       key: ValueKey('${widget.keyPrefix}monthPicker'),
       onChanged: (month) {
@@ -94,7 +94,7 @@ class _DateFieldState extends State<DateField> {
           // the selected month
           if (newDate.month == month) {
             value = newDate;
-            if (widget.onChanged != null) widget.onChanged(value);
+            widget.onChanged(value);
           } else {
             value = DateTime(value.year, month, 1);
           }
@@ -104,7 +104,7 @@ class _DateFieldState extends State<DateField> {
     );
   }
 
-  Widget _buildYearScroller(TextStyle textStyle) {
+  Widget _buildYearScroller(TextStyle? textStyle) {
     return YearScroller(
       key: ValueKey('${widget.keyPrefix}yearPicker'),
       onChanged: (year) {

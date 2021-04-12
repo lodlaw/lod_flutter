@@ -187,9 +187,6 @@ class DateUtils {
   /// Ex: DateTime(2014, 12, 12) => 12/12/2014
   /// Datetime of today will be "Today"
   static String getDisplayDate(DateTime date) {
-    if (date == null) {
-      return "";
-    }
     String displayedDate = "";
 
     final DateTime now = DateTime.now();

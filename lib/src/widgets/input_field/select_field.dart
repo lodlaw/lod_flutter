@@ -14,28 +14,28 @@ class SelectField extends StatefulWidget {
   final List<String> categories;
 
   /// Called to check if other option should be visible.
-  final bool Function(String) otherOptionVisible;
+  final bool Function(String)? otherOptionVisible;
 
   /// Called when the values of select field are changed.
-  final Function(String value, String otherValue) onChanged;
+  final Function(String? value, String? otherValue)? onChanged;
 
   /// The initial value of the field.
-  final String initialValue;
+  final String? initialValue;
 
   /// The initial value of the other option field.
-  final String initialSecondaryValue;
+  final String? initialSecondaryValue;
 
   /// The title of the main input field.
   final String title;
 
   /// The title of the "other" input field.
-  final String secondaryTitle;
+  final String? secondaryTitle;
 
   /// The hint text of the primary field.
   final String hintText;
 
   /// The hint text of the secondary field.
-  final String secondaryHintText;
+  final String? secondaryHintText;
 
   /// Whether or not the field is editable
   final bool editable;
@@ -47,10 +47,10 @@ class SelectField extends StatefulWidget {
   /// If [otherOptionVisible] is null then [initialSecondaryValue] will be
   /// discarded and other field will not be visible.
   const SelectField(
-      {Key key,
-      @required this.categories,
-      @required this.title,
-      @required this.hintText,
+      {Key? key,
+      required this.categories,
+      required this.title,
+      required this.hintText,
       this.otherOptionVisible,
       this.onChanged,
       this.initialValue,
@@ -58,10 +58,7 @@ class SelectField extends StatefulWidget {
       this.secondaryTitle,
       this.secondaryHintText,
       this.editable = true})
-      : assert(categories != null),
-        assert(hintText != null),
-        assert(title != null),
-        assert(otherOptionVisible != null
+      : assert(otherOptionVisible != null
             ? secondaryHintText != null && secondaryTitle != null
             : true),
         super(key: key);
@@ -86,13 +83,13 @@ class _SelectFieldState extends State<SelectField> {
 
     // if there is an initial value then set it to the main input
     if (widget.initialValue != null) {
-      _inputController.text = widget.initialValue;
+      _inputController.text = widget.initialValue!;
     }
 
     // if other value is provided then set it to the state
     if (widget.initialSecondaryValue != null &&
         widget.otherOptionVisible != null) {
-      _customOptionController.text = widget.initialSecondaryValue;
+      _customOptionController.text = widget.initialSecondaryValue!;
       _isCustomOptionVisible = true;
     }
   }
@@ -160,7 +157,7 @@ class _SelectFieldState extends State<SelectField> {
     // set the visible of the "other" field
     if (widget.otherOptionVisible != null) {
       setState(() {
-        _isCustomOptionVisible = widget.otherOptionVisible(value);
+        _isCustomOptionVisible = widget.otherOptionVisible!(value);
       });
     }
 
@@ -170,7 +167,7 @@ class _SelectFieldState extends State<SelectField> {
   /// Trigger callback provided by parent widget.ƒ
   void _propogateFeedback() {
     if (widget.onChanged != null)
-      widget.onChanged(_isCustomOptionVisible ? null : _inputController.text,
+      widget.onChanged!(_isCustomOptionVisible ? null : _inputController.text,
           _isCustomOptionVisible ? _customOptionController.text : null);
   }
 }

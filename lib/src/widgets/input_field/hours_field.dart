@@ -3,18 +3,18 @@ import 'package:lod_flutter/src/widgets/input_field/input_spacer.dart';
 import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 import 'package:lod_flutter/src/widgets/input_field/scrolling_spinner.dart';
 
-typedef OnChangedCallback = void Function(double);
+typedef OnChangedCallback = void Function(double?);
 
 class HoursField extends StatefulWidget {
   final int minHours;
   final int maxHours;
-  final double initialValue;
+  final double? initialValue;
   final String title;
-  final OnChangedCallback onChanged;
+  final OnChangedCallback? onChanged;
   final bool editable;
 
   const HoursField(
-      {Key key,
+      {Key? key,
       this.minHours = 0,
       this.maxHours = 8,
       this.initialValue,
@@ -28,7 +28,7 @@ class HoursField extends StatefulWidget {
 }
 
 class _HoursFieldState extends State<HoursField> {
-  double value;
+  double? value;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _HoursFieldState extends State<HoursField> {
       input: Row(
         children: <Widget>[
           InputSpacer(),
-          _buildHours(textStyle, value.floor()),
+          _buildHours(textStyle, value!.floor()),
           InputSpacer(),
           Container(
             width: 12,
@@ -62,14 +62,14 @@ class _HoursFieldState extends State<HoursField> {
             ),
           ),
           InputSpacer(),
-          _buildMinutes(textStyle, (value - value.floor()) * 60),
+          _buildMinutes(textStyle, (value! - value!.floor()) * 60),
           InputSpacer()
         ],
       ),
     );
   }
 
-  Widget _buildHours(TextStyle textStyle, int defaultValue) {
+  Widget _buildHours(TextStyle? textStyle, int defaultValue) {
     final defaultValueString =
         defaultValue < 10 ? "0$defaultValue" : defaultValue.toString();
     return ScrollingSpinner(
@@ -79,17 +79,17 @@ class _HoursFieldState extends State<HoursField> {
       items: _getHoursString(),
       onChange: (hours) {
         setState(() {
-          final minutes = value - value.floor();
+          final minutes = value! - value!.floor();
 
           value = double.parse(hours) + minutes;
-          widget.onChanged(value);
+          widget.onChanged!(value);
         });
       },
       value: defaultValueString,
     );
   }
 
-  Widget _buildMinutes(TextStyle textStyle, double defaultValue) {
+  Widget _buildMinutes(TextStyle? textStyle, double defaultValue) {
     return ScrollingSpinner(
       key: ValueKey('minutesPicker'),
       disabled: !widget.editable,
@@ -98,11 +98,11 @@ class _HoursFieldState extends State<HoursField> {
       hintText: "mins",
       onChange: (minutes) {
         final newMinutes = double.parse(minutes) / 60;
-        final hours = value.floor();
+        final hours = value!.floor();
 
         setState(() {
           value = newMinutes + hours;
-          widget.onChanged(value);
+          widget.onChanged!(value);
         });
       },
     );

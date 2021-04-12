@@ -20,7 +20,7 @@ class DateRange {
   final DateTime end;
 
   /// Creates a date range for the given start and end [DateTime]
-  DateRange({@required this.start, @required this.end});
+  DateRange({required this.start, required this.end});
 }
 
 class DateRangeField extends StatefulWidget {
@@ -34,10 +34,10 @@ class DateRangeField extends StatefulWidget {
   final double rightPaddingSize;
 
   /// Callback when the value of the field is changed.
-  final ValueChanged<DateRange> onChanged;
+  final ValueChanged<DateRange?> onChanged;
 
   /// The initial value of the field.
-  final DateRange initialValue;
+  final DateRange? initialValue;
 
   /// The title of the start date repr field.
   final String startDateTitle;
@@ -52,16 +52,15 @@ class DateRangeField extends StatefulWidget {
   ///
   /// Argument [onChanged] must not be null
   const DateRangeField(
-      {Key key,
+      {Key? key,
       this.rightPaddingSize = 30,
-      @required this.onChanged,
+      required this.onChanged,
       this.confirmButtonSize = 30,
       this.initialValue,
       this.startDateTitle = "Start Date*",
       this.endDateTitle = "End Date",
       this.editable = true})
-      : assert(onChanged != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   _DateRangeFieldState createState() => _DateRangeFieldState();
@@ -74,8 +73,9 @@ class _DateRangeFieldState extends State<DateRangeField> {
   final _reprStartDateFieldController = TextEditingController();
   final _reprEndDateFieldController = TextEditingController();
 
-  DateRange _value = DateRange(start: DateTime.now(), end: DateTime.now());
-  DateRange _dirtyValue = DateRange(start: DateTime.now(), end: DateTime.now());
+  DateRange? _value = DateRange(start: DateTime.now(), end: DateTime.now());
+  DateRange? _dirtyValue =
+      DateRange(start: DateTime.now(), end: DateTime.now());
 
   @override
   void initState() {
@@ -159,21 +159,21 @@ class _DateRangeFieldState extends State<DateRangeField> {
 
   void _onChangedStartDate(DateTime startDate) {
     setState(() {
-      _dirtyValue = DateRange(start: startDate, end: _dirtyValue.end);
+      _dirtyValue = DateRange(start: startDate, end: _dirtyValue!.end);
     });
   }
 
   void _onChangedEndDate(DateTime endDate) {
     setState(() {
-      _dirtyValue = DateRange(start: _dirtyValue.start, end: endDate);
+      _dirtyValue = DateRange(start: _dirtyValue!.start, end: endDate);
     });
   }
 
   void _onStartDateOk() {
-    final start = _dirtyValue.start;
+    final start = _dirtyValue!.start;
 
     // set start date to end date if it is before the start date
-    final end = _value.end.isBefore(start) ? start : _value.end;
+    final end = _value!.end.isBefore(start) ? start : _value!.end;
 
     setState(() {
       _isStartDateVisible = false;
@@ -183,10 +183,10 @@ class _DateRangeFieldState extends State<DateRangeField> {
   }
 
   void _onEndDateOk() {
-    final end = _dirtyValue.end;
+    final end = _dirtyValue!.end;
 
     // set end date to start date if it is after the end date
-    final start = end.isBefore(_value.start) ? end : _value.start;
+    final start = end.isBefore(_value!.start) ? end : _value!.start;
 
     setState(() {
       _isEndDateVisible = false;
@@ -199,8 +199,8 @@ class _DateRangeFieldState extends State<DateRangeField> {
   void _updateRepr({bool onChangedCallback = true}) {
     final dateFormat = DateFormat('dd/MM/yyyy');
 
-    _reprEndDateFieldController.text = dateFormat.format(_value.end);
-    _reprStartDateFieldController.text = dateFormat.format(_value.start);
+    _reprEndDateFieldController.text = dateFormat.format(_value!.end);
+    _reprStartDateFieldController.text = dateFormat.format(_value!.start);
 
     if (onChangedCallback) widget.onChanged(_value);
   }
@@ -236,7 +236,7 @@ class _SimpleDateField extends StatelessWidget {
   final Function onTapOk;
 
   /// The initial value of the field
-  final DateTime initialValue;
+  final DateTime? initialValue;
 
   /// The identifier of the field
   final String keyPrefix;
@@ -245,28 +245,19 @@ class _SimpleDateField extends StatelessWidget {
   ///
   /// All arguments are required and not null except [initialValue].
   const _SimpleDateField({
-    Key key,
-    @required this.rightPaddingSize,
-    @required this.isVisible,
-    @required this.onCancelSelection,
-    @required this.onOpenSelection,
-    @required this.reprFieldController,
-    @required this.title,
-    @required this.confirmButtonSize,
-    @required this.onChanged,
-    @required this.onTapOk,
+    Key? key,
+    required this.rightPaddingSize,
+    required this.isVisible,
+    required this.onCancelSelection,
+    required this.onOpenSelection,
+    required this.reprFieldController,
+    required this.title,
+    required this.confirmButtonSize,
+    required this.onChanged,
+    required this.onTapOk,
     this.initialValue,
     this.keyPrefix = "",
-  })  : assert(rightPaddingSize != null),
-        assert(title != null),
-        assert(onOpenSelection != null),
-        assert(isVisible != null),
-        assert(onCancelSelection != null),
-        assert(reprFieldController != null),
-        assert(confirmButtonSize != null),
-        assert(onChanged != null),
-        assert(onTapOk != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -340,28 +331,25 @@ class _ConfirmButton extends StatelessWidget {
   ///
   /// [buttonSize] and [paddingSize] and [onTap] arguments must not be null.
   const _ConfirmButton(
-      {Key key,
-      @required this.buttonSize,
-      @required this.paddingSize,
-      @required this.onTap})
-      : assert(buttonSize != null),
-        assert(paddingSize != null),
-        assert(onTap != null),
-        super(key: key);
+      {Key? key,
+      required this.buttonSize,
+      required this.paddingSize,
+      required this.onTap})
+      : super(key: key);
 
   static final borderRadius = BorderRadius.circular(100);
 
   @override
   Widget build(BuildContext context) {
     final color =
-        Theme.of(context).inputDecorationTheme.focusedBorder.borderSide.color;
+        Theme.of(context).inputDecorationTheme.focusedBorder!.borderSide.color;
 
     final actualButtonSize = buttonSize - paddingSize;
     final iconSize = actualButtonSize * _confirmButtonIconSizeFactor;
 
     final button = InkWell(
         borderRadius: borderRadius,
-        onTap: onTap,
+        onTap: onTap as void Function()?,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: color, width: 1.0),

@@ -10,19 +10,17 @@ class DateCard extends StatelessWidget {
   final Widget middleSection;
   final Widget bottomSection;
   final Widget editScreen;
-  final Function onTapDelete;
+  final Function? onTapDelete;
 
   const DateCard(
-      {Key key,
-      @required this.title,
-      @required this.leading,
-      @required this.middleSection,
-      @required this.bottomSection,
-      @required this.editScreen,
+      {Key? key,
+      required this.title,
+      required this.leading,
+      required this.middleSection,
+      required this.bottomSection,
+      required this.editScreen,
       this.onTapDelete})
-      : assert(title != null),
-        assert(leading != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +72,11 @@ class DateCard extends StatelessWidget {
 }
 
 class DateCardButton extends StatelessWidget {
-  const DateCardButton({Key key, this.onPressed, this.iconData})
+  const DateCardButton({Key? key, this.onPressed, this.iconData})
       : super(key: key);
 
-  final Function onPressed;
-  final IconData iconData;
+  final Function? onPressed;
+  final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +90,7 @@ class DateCardButton extends StatelessWidget {
           border: Border.all(width: 1.0, color: Theme.of(context).buttonColor),
         ),
         child: InkWell(
-            onTap: onPressed,
+            onTap: onPressed as void Function()?,
             child: Icon(
               iconData,
               size: _iconSize,
@@ -109,14 +107,11 @@ class IconButtonWithOpenContainerTransition extends StatelessWidget {
   final Color color;
 
   const IconButtonWithOpenContainerTransition(
-      {Key key,
-      @required this.screen,
-      @required this.iconData,
+      {Key? key,
+      required this.screen,
+      required this.iconData,
       this.color = const Color(0xFF6E7781)})
-      : assert(screen != null),
-        assert(iconData != null),
-        assert(color != null),
-        super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
