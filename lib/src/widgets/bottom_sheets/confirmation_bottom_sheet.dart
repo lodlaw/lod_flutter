@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
-showConfirmationBottomSheet(
-    {required BuildContext context,
-    required String title,
-    String okText = "CONTINUE",
-    String cancelText = "CANCEL",
-    Function(BuildContext context)? onOk,
-    Function(BuildContext context)? onCancel}) {
+showConfirmationBottomSheet({required BuildContext context,
+  required String title,
+  String okText = "CONTINUE",
+  String cancelText = "CANCEL",
+  Function(BuildContext context)? onOk,
+  Function(BuildContext context)? onCancel}) {
   showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
       builder: (context) {
-        final textStyle = Theme.of(context).textTheme.subtitle1!.copyWith(
-              letterSpacing: 1.4,
-              wordSpacing: 1.4,
-            );
+        final textStyle = Theme
+            .of(context)
+            .textTheme
+            .subtitle1!
+            .copyWith(
+          letterSpacing: 1.4,
+          wordSpacing: 1.4,
+        );
         final buttonTextStyle = textStyle.apply(fontSizeFactor: 0.9);
 
         final color = textStyle.color!;
@@ -31,7 +34,10 @@ showConfirmationBottomSheet(
                 child: Center(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * (6 / 7)),
+                        maxWidth: MediaQuery
+                            .of(context)
+                            .size
+                            .width * (6 / 7)),
                     child: Text(
                       title,
                       style: textStyle.copyWith(height: 1.6),
@@ -43,26 +49,21 @@ showConfirmationBottomSheet(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  OutlineButton(
+                  _buildButton(
                     child: Text(
                       cancelText,
                       style: buttonTextStyle.copyWith(color: cancelColor),
                     ),
                     onPressed: () => onCancel!(context),
-                    textColor: cancelColor,
-                    borderSide: BorderSide(color: cancelColor),
-                    highlightedBorderColor: cancelColor,
-                    shape: Theme.of(context).buttonTheme.shape,
+                    color: cancelColor,
                   ),
-                  OutlineButton(
+                  _buildButton(
                     child: Text(
                       okText,
                       style: buttonTextStyle,
                     ),
                     onPressed: () => onOk!(context),
-                    textColor: color,
-                    borderSide: BorderSide(color: color),
-                    highlightedBorderColor: color,
+                    color: color,
                   )
                 ],
               ),
@@ -70,4 +71,25 @@ showConfirmationBottomSheet(
           ),
         );
       });
+}
+
+Widget _buildButton({
+  required Widget child,
+  required VoidCallback onPressed,
+  required Color color,
+}) {
+  if (Platform.isIOS) {
+    return CupertinoOutlineButton(
+      child: child,
+      onPressed: onPressed,
+      borderColor: color,
+    );
+  }
+  return OutlineButton(
+    child: child,
+    onPressed: onPressed,
+    textColor: color,
+    borderSide: BorderSide(color: color),
+    highlightedBorderColor: color,
+  );
 }
