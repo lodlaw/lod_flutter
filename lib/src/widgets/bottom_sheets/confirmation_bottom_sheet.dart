@@ -87,9 +87,10 @@ Widget _buildButton({
       child: child,
       onPressed: onPressed,
       borderColor: color,
+      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0)
     );
   }
-  
+
   return OutlineButton(
     child: child,
     onPressed: onPressed,
