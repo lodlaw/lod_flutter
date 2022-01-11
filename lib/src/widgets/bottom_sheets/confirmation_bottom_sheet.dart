@@ -82,7 +82,7 @@ Widget _buildButton({
   required VoidCallback onPressed,
   required Color color,
 }) {
-  if (Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS) {
     return CupertinoOutlineButton(
       child: child,
       onPressed: onPressed,
