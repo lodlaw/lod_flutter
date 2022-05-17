@@ -67,7 +67,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
         }
       }
     } else if (widget.items!.isNotEmpty) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         widget.onChange!(widget.items![0]);
       });
     }
@@ -92,7 +92,7 @@ class _ScrollingSpinnerState extends State<ScrollingSpinner> {
       if (updatedPosition != null) {
         // this must be rendered in the next frame because jumpToItem will be
         // rendered during setState
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollController.jumpToItem(updatedPosition!);
         });
       }

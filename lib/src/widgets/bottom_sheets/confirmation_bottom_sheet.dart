@@ -5,26 +5,23 @@ import 'package:flutter/material.dart';
 
 import '../../../lod_flutter.dart';
 
-showConfirmationBottomSheet({required BuildContext context,
-  required String title,
-  String okText = "CONTINUE",
-  String cancelText = "CANCEL",
-  Function(BuildContext context)? onOk,
-  Function(BuildContext context)? onCancel}) {
+showConfirmationBottomSheet(
+    {required BuildContext context,
+    required String title,
+    String okText = "CONTINUE",
+    String cancelText = "CANCEL",
+    Function(BuildContext context)? onOk,
+    Function(BuildContext context)? onCancel}) {
   showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
       builder: (context) {
-        final textStyle = Theme
-            .of(context)
-            .textTheme
-            .subtitle1!
-            .copyWith(
-          letterSpacing: 1.4,
-          wordSpacing: 1.4,
-        );
+        final textStyle = Theme.of(context).textTheme.subtitle1!.copyWith(
+              letterSpacing: 1.4,
+              wordSpacing: 1.4,
+            );
         final buttonTextStyle = textStyle.apply(fontSizeFactor: 0.9);
 
         final color = textStyle.color!;
@@ -39,10 +36,7 @@ showConfirmationBottomSheet({required BuildContext context,
                 child: Center(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
-                        maxWidth: MediaQuery
-                            .of(context)
-                            .size
-                            .width * (6 / 7)),
+                        maxWidth: MediaQuery.of(context).size.width * (6 / 7)),
                     child: Text(
                       title,
                       style: textStyle.copyWith(height: 1.6),
@@ -85,18 +79,17 @@ Widget _buildButton({
 }) {
   if (!kIsWeb && Platform.isIOS) {
     return CupertinoOutlineButton(
-      child: child,
-      onPressed: onPressed,
-      borderColor: color,
-      padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0)
-    );
+        child: child,
+        onPressed: onPressed,
+        borderColor: color,
+        padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0));
   }
 
-  return OutlineButton(
+  return OutlinedButton(
     child: child,
     onPressed: onPressed,
-    textColor: color,
-    borderSide: BorderSide(color: color),
-    highlightedBorderColor: color,
+    style: OutlinedButton.styleFrom(
+      textStyle: TextStyle(color: color),
+    ),
   );
 }
