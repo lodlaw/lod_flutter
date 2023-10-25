@@ -87,14 +87,17 @@ class DateCardButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.transparent,
           shape: BoxShape.circle,
-          border: Border.all(width: 1.0, color: Theme.of(context).buttonColor),
+          border: Border.all(
+            width: 1.0,
+            // color: Theme.of(context).buttonTheme.colorScheme.primary
+          ),
         ),
         child: InkWell(
             onTap: onPressed as void Function()?,
             child: Icon(
               iconData,
               size: _iconSize,
-              color: Theme.of(context).buttonColor,
+              color: Theme.of(context).buttonTheme.colorScheme?.primary,
             )),
       ),
     );
@@ -120,7 +123,7 @@ class IconButtonWithOpenContainerTransition extends StatelessWidget {
       width: _buttonSize,
       child: Ink(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).buttonColor, width: 0.0),
+          border: Border.all(color: Colors.black, width: 0.0),
           color: Colors.transparent,
           shape: BoxShape.circle,
         ),
