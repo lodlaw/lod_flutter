@@ -18,7 +18,7 @@ showConfirmationBottomSheet(
         borderRadius: BorderRadius.circular(8.0),
       ),
       builder: (context) {
-        final textStyle = Theme.of(context).textTheme.subtitle1!.copyWith(
+        final textStyle = Theme.of(context).textTheme.titleMedium!.copyWith(
               letterSpacing: 1.4,
               wordSpacing: 1.4,
             );

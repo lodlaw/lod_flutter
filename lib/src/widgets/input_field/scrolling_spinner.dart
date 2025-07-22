@@ -197,7 +197,7 @@ class SpinningItem extends StatelessWidget {
       children: <Widget>[
         Text(
           content,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ],
     );
@@ -223,7 +223,7 @@ class HintText extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
-                .subtitle1!
+                .titleMedium!
                 .apply(fontSizeFactor: 0.9),
           )),
     );

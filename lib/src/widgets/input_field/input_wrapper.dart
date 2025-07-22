@@ -140,7 +140,7 @@ class BackgroundInput extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: Text(title!,
-            style: Theme.of(context).textTheme.subtitle1!.apply(
+            style: Theme.of(context).textTheme.titleMedium!.apply(
                 color: Theme.of(context)
                     .inputDecorationTheme
                     .focusedBorder

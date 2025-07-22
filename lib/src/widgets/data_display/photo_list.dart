@@ -105,7 +105,7 @@ class _PhotoItem extends StatelessWidget {
     final inputBorderSide =
         theme.inputDecorationTheme.focusedBorder!.borderSide;
 
-    final textStyle = theme.textTheme.button!;
+    final textStyle = theme.textTheme.labelLarge!;
 
     return Stack(
       children: <Widget>[
@@ -184,7 +184,7 @@ class _PhotoItem extends StatelessWidget {
                 child: Padding(
               padding: const EdgeInsets.only(top: _photoPopUpPadding / 2),
               child: Text("Image #$index",
-                  style: Theme.of(context).textTheme.subtitle1),
+                  style: Theme.of(context).textTheme.titleMedium),
             )),
             Padding(
                 padding: const EdgeInsets.all(_photoPopUpPadding),
