@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   
   intl: ^0.20.2
-  image_picker: ^0.8.2
+  image_picker: ^1.1.2
   animations: ^2.0.8
   
 
