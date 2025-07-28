@@ -5,8 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:lod_flutter/src/widgets/input_field/input_field.dart';
 import 'package:lod_flutter/src/widgets/input_field/input_wrapper.dart';
 
-import 'date_field.dart';
-
 const _confirmButtonPaddingFactor = 1 / 8;
 const _confirmButtonIconSizeFactor = 2 / 3;
 
