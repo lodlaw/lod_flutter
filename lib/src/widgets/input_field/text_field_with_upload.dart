@@ -25,7 +25,7 @@ class TextFieldWithUpload extends StatefulWidget {
   final TextEditingController? controller;
 
   /// Callback when an image is picked.
-  final Future<Photo> Function(PickedFile?) onSelectFile;
+  final Future<Photo> Function(XFile?) onSelectFile;
 
   /// The source of the list of photos.
   final PhotoSource photoSource;
@@ -142,7 +142,7 @@ class _TextFieldWithUploadState extends State<TextFieldWithUpload> {
   Future _onTapPhotoUpload() async => await _onTapUpload(ImageSource.gallery);
 
   Future _onTapUpload(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
+    final pickedFile = await _picker.pickImage(source: source);
     final savedFile = await widget.onSelectFile(pickedFile);
 
     setState(() {
