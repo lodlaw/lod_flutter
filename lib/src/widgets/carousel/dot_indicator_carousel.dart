@@ -82,7 +82,7 @@ class _DotIndicatorCarouselState extends State<DotIndicatorCarousel> {
                     shape: BoxShape.circle,
                     color: _selectedPage == index
                         ? widget.dotColor
-                        : widget.dotColor.withOpacity(_dotColorFactor),
+                        : widget.dotColor.withValues(alpha: _dotColorFactor),
                   ),
                 )));
   }
