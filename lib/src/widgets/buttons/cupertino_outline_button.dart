@@ -5,7 +5,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 // Measured against iOS 12 in Xcode.
 const EdgeInsets _kButtonPadding = EdgeInsets.all(16.0);
@@ -42,7 +41,7 @@ class CupertinoOutlineButton extends StatefulWidget {
     required this.onPressed,
     this.borderColor = Colors.black,
   })  : assert(pressedOpacity == null ||
-      (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
+            (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
         assert(disabledColor != null),
         assert(alignment != null),
         _filled = false,
@@ -66,7 +65,7 @@ class CupertinoOutlineButton extends StatefulWidget {
     required this.onPressed,
     this.borderColor = Colors.black,
   })  : assert(pressedOpacity == null ||
-      (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
+            (pressedOpacity >= 0.0 && pressedOpacity <= 1.0)),
         assert(disabledColor != null),
         assert(alignment != null),
         color = null,
@@ -237,12 +236,12 @@ class _CupertinoButtonState extends State<CupertinoOutlineButton>
     final Color foregroundColor = backgroundColor != null
         ? themeData.primaryContrastingColor
         : enabled
-        ? primaryColor
-        : CupertinoDynamicColor.resolve(
-        CupertinoColors.placeholderText, context);
+            ? primaryColor
+            : CupertinoDynamicColor.resolve(
+                CupertinoColors.placeholderText, context);
 
     final TextStyle textStyle =
-    themeData.textTheme.textStyle.copyWith(color: foregroundColor);
+        themeData.textTheme.textStyle.copyWith(color: foregroundColor);
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -256,21 +255,18 @@ class _CupertinoButtonState extends State<CupertinoOutlineButton>
           constraints: widget.minSize == null
               ? const BoxConstraints()
               : BoxConstraints(
-            minWidth: widget.minSize!,
-            minHeight: widget.minSize!,
-          ),
+                  minWidth: widget.minSize!,
+                  minHeight: widget.minSize!,
+                ),
           child: FadeTransition(
             opacity: _opacityAnimation,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: widget.borderRadius,
-                border: Border.all(
-                    color: widget.borderColor,
-                    width: 1.5
-                ),
+                border: Border.all(color: widget.borderColor, width: 1.5),
                 color: backgroundColor != null && !enabled
                     ? CupertinoDynamicColor.resolve(
-                    widget.disabledColor, context)
+                        widget.disabledColor, context)
                     : backgroundColor,
               ),
               child: Padding(
