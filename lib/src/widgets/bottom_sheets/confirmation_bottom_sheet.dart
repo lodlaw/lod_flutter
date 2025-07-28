@@ -25,7 +25,7 @@ showConfirmationBottomSheet(
         final buttonTextStyle = textStyle.apply(fontSizeFactor: 0.9);
 
         final color = textStyle.color!;
-        final cancelColor = color.withOpacity(0.65);
+        final cancelColor = color.withValues(alpha: 0.65);
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
