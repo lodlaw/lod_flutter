@@ -1,18 +1,18 @@
 name: lod_flutter
 description: A new Flutter package project.
-version: 0.0.3
+version: 0.0.4
 author: "Lawyers on Demand"
 homepage: "https://lodlaw.com"
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
-  flutter: ">=3.16.0 <3.32.7"
+  flutter: ">=3.24.0 <3.32.8"
 
 dependencies:
   flutter:
     sdk: flutter
   
-  intl: ^0.17.0
+  intl: ^0.20.2
   image_picker: ^0.8.2
   animations: ^2.0.8
   
